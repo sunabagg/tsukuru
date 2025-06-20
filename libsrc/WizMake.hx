@@ -21,9 +21,9 @@ class WizMake {
             var json = sys.io.File.getContent(snbprojPath);
             this.snbProjJson = haxe.Json.parse(json);
 
-            Sys.println("Successfully loaded project XML.");
+            Sys.println("Successfully loaded project JSON.");
         } catch (e: Dynamic) {
-            Sys.println("Error loading project XML: " + e);
+            Sys.println("Error loading project JSON: " + e);
             return;
         }
     }
