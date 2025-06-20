@@ -88,7 +88,9 @@ class Tsukuru {
 
             var assets = this.getAllFiles(this.projDirPath + "/assets");
 
-
+            var assetKeys = [];
+            for (k in assets.keys()) assetKeys.push(k);
+            Sys.println("Found " + assetKeys.length + " asset files in the project.");
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
