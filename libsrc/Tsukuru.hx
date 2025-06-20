@@ -132,8 +132,26 @@ class Tsukuru {
                     Sys.println("Source map file does not exist, skipping: " + sourceMapName);
                 }
             }
+            if (this.snbProjJson.apisymbols != false) {
+                var typesXmlPath = this.projDirPath + "/types.xml";
+                if (FileSystem.exists(typesXmlPath)) {
+                    Sys.println("Adding types XML file: types.xml");
+                    var typesXmlContent = File.getBytes(typesXmlPath);
+                    var typesXmlEntry:haxe.zip.Entry = {
+                        fileName: "types.xml",
+                        fileSize: typesXmlContent.length,
+                        dataSize: typesXmlContent.length,
+                        fileTime: Date.now(),
+                        data: typesXmlContent,
+                        crc32: haxe.crypto.Crc32.make(typesXmlContent),
+                        compressed: true
+                    };
+                    entries.add(typesXmlEntry);
+                } else {
+                    Sys.println("Types XML file does not exist, skipping.");
+                }
+            }
             writer.write(entries);
-            //writer.
             out.close();
             
         } catch (e: Dynamic) {
