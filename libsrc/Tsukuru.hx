@@ -102,7 +102,7 @@ class Tsukuru {
 
             // Add main Lua file to the zip
             var entry:haxe.zip.Entry = {
-                fileName: "/" + this.snbProjJson.entrypoint,
+                fileName: this.snbProjJson.entrypoint,
                 fileTime: Date.now(),
                 dataSize: mainLuaContent.length,
                 fileSize: mainLuaContent.length,
@@ -113,8 +113,8 @@ class Tsukuru {
             entries.add(entry);
 
             if (this.snbProjJson.sourcemap != false) {
-                var sourceMapName = "/" + this.snbProjJson.entrypoint + ".map";
-                var sourceMapPath = this.projDirPath + sourceMapName;
+                var sourceMapName = this.snbProjJson.entrypoint + ".map";
+                var sourceMapPath = this.projDirPath + "/" + sourceMapName;
                 if (FileSystem.exists(sourceMapPath)) {
                     Sys.println("Adding source map file: " + sourceMapName);
                     var sourceMapContent = File.getBytes(sourceMapPath);
@@ -138,7 +138,7 @@ class Tsukuru {
                     Sys.println("Adding types XML file: /types.xml");
                     var typesXmlContent = File.getBytes(typesXmlPath);
                     var typesXmlEntry:haxe.zip.Entry = {
-                        fileName: "/types.xml",
+                        fileName: "/ypes.xml",
                         fileSize: typesXmlContent.length,
                         dataSize: typesXmlContent.length,
                         fileTime: Date.now(),
@@ -226,9 +226,13 @@ class Tsukuru {
                 }
             } else {
                 // Read file content
-                var content = File.getContent(filePath);
+                var content = File.getBytes(filePath);
                 var vfilePath = StringTools.replace(filePath, this.projDirPath, "");
-                assets.set(vfilePath, Bytes.ofString(content));
+                if (StringTools.startsWith(vfilePath, "/")) {
+                    vfilePath = vfilePath.substr(1);
+                }
+                Sys.println("Adding file to assets: " + vfilePath);
+                assets.set(vfilePath, content);
             }
         }
 
