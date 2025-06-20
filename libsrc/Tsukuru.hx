@@ -151,6 +151,22 @@ class Tsukuru {
                     Sys.println("Types XML file does not exist, skipping.");
                 }
             }
+
+            // Add all asset files to the zip
+            for (assetKey in assetKeys) {
+                var assetContent = assets.get(assetKey);
+                Sys.println("Adding asset file: " + assetKey);
+                var assetEntry:haxe.zip.Entry = {
+                    fileName: "assets/" + assetKey,
+                    fileSize: assetContent.length,
+                    dataSize: assetContent.length,
+                    fileTime: Date.now(),
+                    data: assetContent,
+                    crc32: haxe.crypto.Crc32.make(assetContent),
+                    compressed: true
+                };
+                entries.add(assetEntry);
+            }
             writer.write(entries);
             out.close();
             
@@ -183,6 +199,8 @@ class Tsukuru {
         if (!FileSystem.exists(dir)) {
             throw "Directory does not exist: " + dir;
         }
+
+        var vdir = StringTools.replace(dir, this.projDirPath, "");
 
         var assets = new StringMap<Bytes>();
 
