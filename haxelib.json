@@ -1,0 +1,6 @@
+{
+    "name" : "wizmake",
+    "classPath": "libsrc",
+    "dependencies": {
+    }
+}
