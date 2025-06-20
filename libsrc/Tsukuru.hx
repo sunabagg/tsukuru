@@ -70,6 +70,7 @@ class Tsukuru {
             var hxres = Sys.command(command);
             if (hxres != 0) {
                 Sys.println("Haxe build command failed with exit code: " + hxres);
+                Sys.exit(hxres);
                 return;
             }
 
