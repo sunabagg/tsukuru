@@ -99,6 +99,21 @@ class Tsukuru {
 
         var assets = new StringMap<Bytes>();
 
+        for (f in FileSystem.readDirectory(dir)) {
+            var filePath = dir + "/" + f;
+            if (FileSystem.isDirectory(filePath)) {
+                // Recursively get files from subdirectory
+                var subAssets = getAllFiles(filePath);
+                for (key in subAssets.keys()) {
+                    assets.set(key, subAssets.get(key));
+                }
+            } else {
+                // Read file content
+                var content = File.getContent(filePath);
+                assets.set(f, Bytes.ofString(content));
+            }
+        }
+
         return assets;
     }
 }
