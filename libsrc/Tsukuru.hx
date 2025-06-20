@@ -231,7 +231,7 @@ class Tsukuru {
                 if (StringTools.startsWith(vfilePath, "/")) {
                     vfilePath = vfilePath.substr(1);
                 }
-                Sys.println("Adding file to assets: " + vfilePath);
+                //Sys.println("Adding file to assets: " + vfilePath);
                 assets.set(vfilePath, content);
             }
         }
