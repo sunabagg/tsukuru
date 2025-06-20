@@ -170,6 +170,14 @@ class Tsukuru {
             }
 
             Sys.println("creating header for zip file");
+
+            var header : HeaderFile = {
+                name: this.snbProjJson.name,
+                version: this.snbProjJson.version,
+                rootUrl: this.snbProjJson.rootUrl,
+                luabin: this.snbProjJson.luabin,
+                type: this.snbProjJson.type
+            };
             
 
             writer.write(entries);
