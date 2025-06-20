@@ -1,6 +1,12 @@
 class Main {
     public static function main() {
-        Sys.println("Welcome to WizMake CLI!");
-        Sys.println("This is a placeholder for the WizMake CLI functionality.");
+        var args = Sys.args();
+        if (args.length < 1) {
+            Sys.println("Usage: snbmake <project.snbproj>");
+            return;
+        }
+
+        var wizMake = new WizMake();
+        wizMake.build(args[0]);
     }
 }
