@@ -5,4 +5,5 @@ typedef SunabaProject = {
     var scriptdir: String;
     var apisymbols: Bool;
     var sourcemap: Bool;
+    var entrypoint: String;
 }
