@@ -22,6 +22,7 @@ class WizMake {
         try {
             var json = sys.io.File.getContent(snbprojPath);
             this.snbProjJson = haxe.Json.parse(json);
+            Sys.println("Successfully loaded project JSON.");
 
             Sys.println("Project name: " + this.snbProjJson.name);
             Sys.println("Project version: " + this.snbProjJson.version);
@@ -33,7 +34,7 @@ class WizMake {
             Sys.println("Lua binary: " + this.snbProjJson.luabin);
             Sys.println("Libraries: " + this.snbProjJson.libraries.join(", "));
             Sys.println("Compiler flags: " + this.snbProjJson.compilerFlags.join(", "));
-            Sys.println("Successfully loaded project JSON.");
+            
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
             return;
