@@ -7,6 +7,8 @@ class WizMake {
 
     public var snbProjJson: SunabaProject;
 
+    private var zipOutputPath: String;
+
     public function new() {}
 
     public function build(snbprojPath: String): Void {
@@ -17,6 +19,13 @@ class WizMake {
         var snbProjPathArray = snbprojPath.split("/");
         this.projDirPath = snbProjPathArray.slice(0, snbProjPathArray.length - 1).join("/");
         Sys.println("Project directory path: " + this.projDirPath);
+        var binPath = this.projDirPath + "/bin";
+        if (!sys.io.FileSystem.exists(binPath)) {
+            sys.io.FileSystem.createDirectory(binPath);
+            Sys.println("Created bin directory: " + binPath);
+        } else {
+            Sys.println("Bin directory already exists: " + binPath);
+        }
 
         // Load the XML project file
         try {
@@ -34,6 +43,10 @@ class WizMake {
             Sys.println("Lua binary: " + this.snbProjJson.luabin);
             Sys.println("Libraries: " + this.snbProjJson.libraries.join(", "));
             Sys.println("Compiler flags: " + this.snbProjJson.compilerFlags.join(", "));
+
+            if (snbProjJson.type == "executable") {
+                zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
+            }
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
