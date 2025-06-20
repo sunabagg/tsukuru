@@ -8,4 +8,5 @@ typedef SunabaProject = {
     var entrypoint: String;
     var luabin: String;
     var libraries: Array<String>;
+    var compilerFlags: Array<String>;
 }
