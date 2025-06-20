@@ -56,6 +56,9 @@ class WizMake {
                 return;
             }
 
+            var command = this.generateHaxeBuildCommand();
+            Sys.println("Generated Haxe build command: " + command);
+
             Sys.println("Output path for binary: " + zipOutputPath);
             
         } catch (e: Dynamic) {
@@ -67,12 +70,12 @@ class WizMake {
     private function generateHaxeBuildCommand(): String {
         var command = "haxe -cp " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint;
         if (this.snbProjJson.apisymbols != false) {
-            command += " --xml types.xml";
+            command += " --xml " + this.projDirPath + "/types.xml";
         }
         if (this.snbProjJson.sourcemap != false) {
             command += " -D source-map";
         }
-        command += " -lua " + this.projDirPath + this.snbProjJson.luabin += " -D lua-vanilla";
+        command += " -lua " + this.projDirPath + "/" + this.snbProjJson.luabin += " -D lua-vanilla";
 
         var librariesStr = "";
         for (lib in this.snbProjJson.libraries) {
