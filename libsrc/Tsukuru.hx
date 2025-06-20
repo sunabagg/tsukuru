@@ -66,7 +66,12 @@ class Tsukuru {
 
             Sys.println("Output path for binary: " + zipOutputPath);
 
-            Sys.command(command);
+            var hxres = Sys.command(command);
+            if (hxres != 0) {
+                Sys.println("Haxe build command failed with exit code: " + hxres);
+                return;
+            }
+
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
