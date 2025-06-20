@@ -3,6 +3,7 @@ package;
 typedef SunabaProject = {
     var name: String;
     var version: String;
+    var rootUrl: String;
     var type: String;
     var scriptdir: String;
     var apisymbols: Bool;
