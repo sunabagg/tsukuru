@@ -100,10 +100,10 @@ class Tsukuru {
             // Collect all zip entries in a list
             var entries = new haxe.ds.List<haxe.zip.Entry>();
 
-            Sys.println("Adding main Lua file to zip: " + this.snbProjJson.entrypoint);
+            Sys.println("Adding main Lua file to zip: " + this.snbProjJson.luabin);
             // Add main Lua file to the zip
             var entry:haxe.zip.Entry = {
-                fileName: this.snbProjJson.entrypoint,
+                fileName: this.snbProjJson.luabin,
                 fileTime: Date.now(),
                 dataSize: mainLuaContent.length,
                 fileSize: mainLuaContent.length,
