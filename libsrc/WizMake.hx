@@ -68,7 +68,7 @@ class WizMake {
     }
 
     private function generateHaxeBuildCommand(): String {
-        var command = "haxe -cp " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint;
+        var command = " -cp " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint;
         if (this.snbProjJson.apisymbols != false) {
             command += " --xml " + this.projDirPath + "/types.xml";
         }
