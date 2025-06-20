@@ -11,6 +11,8 @@ class WizMake {
 
     private var zipOutputPath: String;
 
+    public var haxePath: String = "haxe"; // Default path to Haxe compiler
+
     public function new() {}
 
     public function build(snbprojPath: String): Void {
