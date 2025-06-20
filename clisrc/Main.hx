@@ -1,3 +1,5 @@
+package;
+
 class Main {
     public static function main() {
         var args = Sys.args();
