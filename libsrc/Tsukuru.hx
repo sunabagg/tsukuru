@@ -114,7 +114,7 @@ class Tsukuru {
             entries.add(entry);
 
             if (this.snbProjJson.sourcemap != false) {
-                var sourceMapName = this.snbProjJson.entrypoint + ".map";
+                var sourceMapName = this.snbProjJson.luabin + ".map";
                 var sourceMapPath = this.projDirPath + "/" + sourceMapName;
                 if (FileSystem.exists(sourceMapPath)) {
                     Sys.println("Adding source map file: " + sourceMapName);
