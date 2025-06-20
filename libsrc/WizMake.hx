@@ -47,6 +47,12 @@ class WizMake {
             if (snbProjJson.type == "executable") {
                 zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
             }
+            else if (snbProjJson.type == "library") {
+                zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbl";
+            } else {
+                Sys.println("Unknown project type: " + this.snbProjJson.type);
+                return;
+            }
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
