@@ -1,4 +1,6 @@
 import haxe.ds.StringMap;
+import sys.io.File;
+import sys.FileSystem;
 
 class WizMake {
 
@@ -20,8 +22,8 @@ class WizMake {
         this.projDirPath = snbProjPathArray.slice(0, snbProjPathArray.length - 1).join("/");
         Sys.println("Project directory path: " + this.projDirPath);
         var binPath = this.projDirPath + "/bin";
-        if (!sys.io.FileSystem.exists(binPath)) {
-            sys.io.FileSystem.createDirectory(binPath);
+        if (!FileSystem.exists(binPath)) {
+            FileSystem.createDirectory(binPath);
             Sys.println("Created bin directory: " + binPath);
         } else {
             Sys.println("Bin directory already exists: " + binPath);
