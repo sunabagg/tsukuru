@@ -1,3 +1,5 @@
+package;
+
 import haxe.ds.StringMap;
 import sys.io.File;
 import sys.FileSystem;
