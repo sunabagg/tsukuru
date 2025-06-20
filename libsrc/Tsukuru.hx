@@ -157,7 +157,7 @@ class Tsukuru {
                 var assetContent = assets.get(assetKey);
                 Sys.println("Adding asset file: assets/" + assetKey);
                 var assetEntry:haxe.zip.Entry = {
-                    fileName: "assets/" + assetKey,
+                    fileName: assetKey,
                     fileSize: assetContent.length,
                     dataSize: assetContent.length,
                     fileTime: Date.now(),
