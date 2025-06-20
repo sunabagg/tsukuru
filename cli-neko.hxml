@@ -1,4 +1,4 @@
 --class-path clisrc
 --main Main
---library wizmake
---neko bin/wizmake.n
+--library tsukuru
+--neko bin/tsukuru.n

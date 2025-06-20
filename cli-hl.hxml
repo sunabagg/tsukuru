@@ -1,4 +1,4 @@
 --class-path clisrc
 --main Main
---library wizmake
---hl bin/wizmake.hl
+--library tsukuru
+--hl bin/tsukuru.hl
