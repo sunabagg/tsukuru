@@ -74,7 +74,14 @@ class Tsukuru {
                 return;
             }
 
+            Sys.println("Haxe build command executed successfully.");
 
+            var mainLuaPath = this.projDirPath + "/" + this.snbProjJson.entrypoint;
+            if (!FileSystem.exists(mainLuaPath)) {
+                Sys.println("Main Lua file does not exist: " + mainLuaPath);
+                Sys.exit(1);
+                return;
+            }
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
