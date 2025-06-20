@@ -1,5 +1,6 @@
 package;
 
+import haxe.io.Bytes;
 import haxe.ds.StringMap;
 import sys.io.File;
 import sys.FileSystem;
@@ -89,5 +90,15 @@ class Tsukuru {
         }
         command += " " + this.snbProjJson.compilerFlags.join(" ");
         return command;
+    }
+
+    private function getAllFiles(dir:String): StringMap<Bytes> {
+        if (!FileSystem.exists(dir)) {
+            throw "Directory does not exist: " + dir;
+        }
+
+        var assets = new StringMap<Bytes>();
+
+        return assets;
     }
 }
