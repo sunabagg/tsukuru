@@ -178,6 +178,20 @@ class Tsukuru {
                 luabin: this.snbProjJson.luabin,
                 type: this.snbProjJson.type
             };
+
+            var headerJson = haxe.Json.stringify(header);
+            Sys.println("Adding header to zip file: " + snbProjJson.name + ".json");
+            var headerContent = haxe.io.Bytes.ofString(headerJson);
+            var headerEntry:haxe.zip.Entry = {
+                fileName: snbProjJson.name + ".json",
+                fileSize: headerContent.length,
+                dataSize: headerContent.length,
+                fileTime: Date.now(),
+                data: headerContent,
+                crc32: haxe.crypto.Crc32.make(headerContent),
+                compressed: false
+            };
+            entries.add(headerEntry);
             
 
             writer.write(entries);
