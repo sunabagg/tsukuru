@@ -52,10 +52,20 @@ class Tsukuru {
             Sys.println("Compiler flags: " + this.snbProjJson.compilerFlags.join(", "));
 
             if (snbProjJson.type == "executable") {
-                zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
+                if (zipOutputPath == "") {
+                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
+                }
+                else {
+                    zipOutputPath += ".sbx";
+                }
             }
             else if (snbProjJson.type == "library") {
-                zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sblib";
+                if (zipOutputPath == "") {
+                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sblib";
+                }
+                else {
+                    zipOutputPath += ".sblib";
+                }
             } else {
                 Sys.println("Unknown project type: " + this.snbProjJson.type);
                 Sys.exit(1);
