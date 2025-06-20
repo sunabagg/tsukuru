@@ -2,5 +2,5 @@
 .haxelsp/recording/
 dump/
 bin/
-cpp/
+out/
 tsukuru.jar
