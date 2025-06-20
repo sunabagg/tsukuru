@@ -168,9 +168,9 @@ class Tsukuru {
                 entries.add(assetEntry);
             }
 
-            Sys.println("Adding libraries to the zip file.");
+            Sys.println("creating header for zip file");
             
-            
+
             writer.write(entries);
             // Close the output stream
             out.close();
