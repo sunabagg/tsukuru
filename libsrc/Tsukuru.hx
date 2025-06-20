@@ -112,8 +112,8 @@ class Tsukuru {
             };
             entries.add(entry);
 
-            var sourceMapName = this.snbProjJson.entrypoint + ".map";
             if (this.snbProjJson.sourcemap != false) {
+                var sourceMapName = this.snbProjJson.entrypoint + ".map";
                 var sourceMapPath = this.projDirPath + "/" + sourceMapName;
                 if (FileSystem.exists(sourceMapPath)) {
                     Sys.println("Adding source map file: " + sourceMapName);
