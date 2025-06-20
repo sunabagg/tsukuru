@@ -1,9 +1,11 @@
+import haxe.ds.StringMap;
+
 class WizMake {
 
     public var snbprojPath: String;
     public var projDirPath: String;
 
-    public var snbProjJson: Map<String, Dynamic>;
+    public var snbProjJson: Dynamic;
 
     public function new() {}
 
