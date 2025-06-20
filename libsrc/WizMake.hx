@@ -79,7 +79,6 @@ class WizMake {
             librariesStr += " --library " + lib;
         }
         command += " " + this.snbProjJson.compilerFlags.join(" ");
-        command += " -o " + zipOutputPath;
         return command;
     }
 }
