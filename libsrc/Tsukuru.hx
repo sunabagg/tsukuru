@@ -126,7 +126,7 @@ class Tsukuru {
                         fileTime: Date.now(),
                         data: sourceMapContent,
                         crc32: haxe.crypto.Crc32.make(sourceMapContent),
-                        compressed: true
+                        compressed: false
                     };
                     entries.add(sourceMapEntry);
                 } else {
@@ -139,13 +139,13 @@ class Tsukuru {
                     Sys.println("Adding types XML file: types.xml");
                     var typesXmlContent = File.getBytes(typesXmlPath);
                     var typesXmlEntry:haxe.zip.Entry = {
-                        fileName: "/ypes.xml",
+                        fileName: "types.xml",
                         fileSize: typesXmlContent.length,
                         dataSize: typesXmlContent.length,
                         fileTime: Date.now(),
                         data: typesXmlContent,
                         crc32: haxe.crypto.Crc32.make(typesXmlContent),
-                        compressed: true
+                        compressed: false
                     };
                     entries.add(typesXmlEntry);
                 } else {
@@ -164,7 +164,7 @@ class Tsukuru {
                     fileTime: Date.now(),
                     data: assetContent,
                     crc32: haxe.crypto.Crc32.make(assetContent),
-                    compressed: true
+                    compressed: false
                 };
                 entries.add(assetEntry);
             }
