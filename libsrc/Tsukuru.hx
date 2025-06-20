@@ -12,7 +12,7 @@ class Tsukuru {
 
     public var snbProjJson: SunabaProject;
 
-    private var zipOutputPath: String;
+    public var zipOutputPath: String = "";
 
     public var haxePath: String = "haxe"; // Default path to Haxe compiler
 
