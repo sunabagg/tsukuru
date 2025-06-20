@@ -155,7 +155,7 @@ class Tsukuru {
             // Add all asset files to the zip
             for (assetKey in assetKeys) {
                 var assetContent = assets.get(assetKey);
-                Sys.println("Adding asset file: " + assetKey);
+                Sys.println("Adding asset file: assets/" + assetKey);
                 var assetEntry:haxe.zip.Entry = {
                     fileName: "assets/" + assetKey,
                     fileSize: assetContent.length,
@@ -167,16 +167,20 @@ class Tsukuru {
                 };
                 entries.add(assetEntry);
             }
+
+            Sys.println("Adding libraries to the zip file.");
+            
+            
             writer.write(entries);
+            // Close the output stream
+            out.close();
+
             if (snbProjJson.type == "executable") {
                 Sys.println("sbx file created successfully at: " + zipOutputPath);
             }
             else if (snbProjJson.type == "library") {
                 Sys.println("sblib file created successfully at: " + zipOutputPath);
             }
-            
-            // Close the output stream
-            out.close();
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
