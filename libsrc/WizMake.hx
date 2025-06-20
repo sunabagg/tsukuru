@@ -48,7 +48,7 @@ class WizMake {
                 zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
             }
             else if (snbProjJson.type == "library") {
-                zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbl";
+                zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sblib";
             } else {
                 Sys.println("Unknown project type: " + this.snbProjJson.type);
                 return;
