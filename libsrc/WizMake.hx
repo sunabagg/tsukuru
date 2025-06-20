@@ -3,7 +3,7 @@ class WizMake {
     public var snbprojPath: String;
     public var projDirPath: String;
 
-    public var snbProjXml: Xml;
+    public var snbProjJson: Map<String, Dynamic>;
 
     public function new() {}
 
@@ -18,7 +18,9 @@ class WizMake {
 
         // Load the XML project file
         try {
-            this.snbProjXml = Xml.parse(sys.io.File.getContent(snbprojPath));
+            var json = sys.io.File.getContent(snbprojPath);
+            this.snbProjJson = haxe.Json.parse(json);
+
             Sys.println("Successfully loaded project XML.");
         } catch (e: Dynamic) {
             Sys.println("Error loading project XML: " + e);
