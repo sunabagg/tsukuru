@@ -180,10 +180,10 @@ class Tsukuru {
             };
 
             var headerJson = haxe.Json.stringify(header);
-            Sys.println("Adding header to zip file: " + snbProjJson.name + ".json");
+            Sys.println("Adding header to zip file: header.json");
             var headerContent = haxe.io.Bytes.ofString(headerJson);
             var headerEntry:haxe.zip.Entry = {
-                fileName: snbProjJson.name + ".json",
+                fileName: "header.json",
                 fileSize: headerContent.length,
                 dataSize: headerContent.length,
                 fileTime: Date.now(),
