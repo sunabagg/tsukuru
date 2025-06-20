@@ -168,6 +168,14 @@ class Tsukuru {
                 entries.add(assetEntry);
             }
             writer.write(entries);
+            if (snbProjJson.type == "executable") {
+                Sys.println("sbx file created successfully at: " + zipOutputPath);
+            }
+            else if (snbProjJson.type == "library") {
+                Sys.println("sblib file created successfully at: " + zipOutputPath);
+            }
+            
+            // Close the output stream
             out.close();
             
         } catch (e: Dynamic) {
