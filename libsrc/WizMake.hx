@@ -55,10 +55,30 @@ class WizMake {
                 Sys.println("Unknown project type: " + this.snbProjJson.type);
                 return;
             }
+
+            Sys.println("Output path for binary: " + zipOutputPath);
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
             return;
         }
+    }
+
+    private function generateHaxeBuildCommand(): String {
+        var command = "haxe -cp " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint;
+        if (this.snbProjJson.apisymbols) {
+            command += " --xml types.xml";
+        }
+        command += " -D sourcemap=" + (this.snbProjJson.sourcemap ? "true" : "false");
+        command += " -lua " + this.projDirPath + this.snbProjJson.luabin;
+
+        var librariesStr = "";
+        for (lib in this.snbProjJson.libraries) {
+            librariesStr += " --library " + lib;
+        }
+        command += " -D libraries=" + this.snbProjJson.libraries.join(",");
+        command += " -D compilerFlags=" + this.snbProjJson.compilerFlags.join(" ");
+        command += " -o " + zipOutputPath;
+        return command;
     }
 }
