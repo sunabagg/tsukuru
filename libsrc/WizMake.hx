@@ -72,7 +72,7 @@ class WizMake {
         if (this.snbProjJson.sourcemap != false) {
             command += " -D source-map";
         }
-        command += " -lua " + this.projDirPath + this.snbProjJson.luabin;
+        command += " -lua " + this.projDirPath + this.snbProjJson.luabin += " -D lua-vanilla";
 
         var librariesStr = "";
         for (lib in this.snbProjJson.libraries) {
