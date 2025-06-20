@@ -1,5 +1,3 @@
-package clisrc;
-
 class Main {
     public static function main() {
         Sys.println("Welcome to WizMake CLI!");
