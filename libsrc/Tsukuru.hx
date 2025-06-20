@@ -58,6 +58,7 @@ class Tsukuru {
                 zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sblib";
             } else {
                 Sys.println("Unknown project type: " + this.snbProjJson.type);
+                Sys.exit(1);
                 return;
             }
 
@@ -72,9 +73,11 @@ class Tsukuru {
                 return;
             }
 
+
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
+            Sys.exit(1);
             return;
         }
     }
