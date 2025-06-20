@@ -91,6 +91,50 @@ class Tsukuru {
             var assetKeys = [];
             for (k in assets.keys()) assetKeys.push(k);
             Sys.println("Found " + assetKeys.length + " asset files in the project.");
+
+            // Create the zip file using haxe.zip.Writer
+            Sys.println("Creating zip file at: " + zipOutputPath);
+            var out = sys.io.File.write(zipOutputPath, true);
+            var writer = new haxe.zip.Writer(out);
+
+            // Collect all zip entries in a list
+            var entries = new haxe.ds.List<haxe.zip.Entry>();
+
+            // Add main Lua file to the zip
+            var entry:haxe.zip.Entry = {
+                fileName: this.snbProjJson.entrypoint,
+                fileTime: Date.now(),
+                dataSize: mainLuaContent.length,
+                fileSize: mainLuaContent.length,
+                data: mainLuaContent,
+                crc32: haxe.crypto.Crc32.make(mainLuaContent),
+                compressed: false
+            };
+            entries.add(entry);
+
+            var sourceMapName = this.snbProjJson.entrypoint + ".map";
+            if (this.snbProjJson.sourcemap != false) {
+                var sourceMapPath = this.projDirPath + "/" + sourceMapName;
+                if (FileSystem.exists(sourceMapPath)) {
+                    Sys.println("Adding source map file: " + sourceMapName);
+                    var sourceMapContent = File.getBytes(sourceMapPath);
+                    var sourceMapEntry:haxe.zip.Entry = {
+                        fileName: sourceMapName,
+                        fileSize: sourceMapContent.length,
+                        dataSize: sourceMapContent.length,
+                        fileTime: Date.now(),
+                        data: sourceMapContent,
+                        crc32: haxe.crypto.Crc32.make(sourceMapContent),
+                        compressed: true
+                    };
+                    entries.add(sourceMapEntry);
+                } else {
+                    Sys.println("Source map file does not exist, skipping: " + sourceMapName);
+                }
+            }
+            writer.write(entries);
+            //writer.
+            out.close();
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
