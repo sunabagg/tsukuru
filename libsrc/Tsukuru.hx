@@ -102,7 +102,7 @@ class Tsukuru {
 
             // Add main Lua file to the zip
             var entry:haxe.zip.Entry = {
-                fileName: this.snbProjJson.entrypoint,
+                fileName: "/" + this.snbProjJson.entrypoint,
                 fileTime: Date.now(),
                 dataSize: mainLuaContent.length,
                 fileSize: mainLuaContent.length,
