@@ -6,7 +6,7 @@ class Main {
             return;
         }
 
-        var wizMake = new WizMake();
-        wizMake.build(args[0]);
+        var tsukuru = new Tsukuru();
+        tsukuru.build(args[0]);
     }
 }

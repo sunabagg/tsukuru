@@ -2,7 +2,7 @@ import haxe.ds.StringMap;
 import sys.io.File;
 import sys.FileSystem;
 
-class WizMake {
+class Tsukuru {
 
     public var snbprojPath: String;
     public var projDirPath: String;
