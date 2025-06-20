@@ -135,7 +135,7 @@ class Tsukuru {
             if (this.snbProjJson.apisymbols != false) {
                 var typesXmlPath = this.projDirPath + "/types.xml";
                 if (FileSystem.exists(typesXmlPath)) {
-                    Sys.println("Adding types XML file: /types.xml");
+                    Sys.println("Adding types XML file: types.xml");
                     var typesXmlContent = File.getBytes(typesXmlPath);
                     var typesXmlEntry:haxe.zip.Entry = {
                         fileName: "/ypes.xml",
