@@ -113,8 +113,8 @@ class Tsukuru {
             entries.add(entry);
 
             if (this.snbProjJson.sourcemap != false) {
-                var sourceMapName = this.snbProjJson.entrypoint + ".map";
-                var sourceMapPath = this.projDirPath + "/" + sourceMapName;
+                var sourceMapName = "/" + this.snbProjJson.entrypoint + ".map";
+                var sourceMapPath = this.projDirPath + sourceMapName;
                 if (FileSystem.exists(sourceMapPath)) {
                     Sys.println("Adding source map file: " + sourceMapName);
                     var sourceMapContent = File.getBytes(sourceMapPath);
@@ -138,7 +138,7 @@ class Tsukuru {
                     Sys.println("Adding types XML file: types.xml");
                     var typesXmlContent = File.getBytes(typesXmlPath);
                     var typesXmlEntry:haxe.zip.Entry = {
-                        fileName: "types.xml",
+                        fileName: "/types.xml",
                         fileSize: typesXmlContent.length,
                         dataSize: typesXmlContent.length,
                         fileTime: Date.now(),
