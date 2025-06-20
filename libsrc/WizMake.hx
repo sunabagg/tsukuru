@@ -66,10 +66,12 @@ class WizMake {
 
     private function generateHaxeBuildCommand(): String {
         var command = "haxe -cp " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint;
-        if (this.snbProjJson.apisymbols) {
+        if (this.snbProjJson.apisymbols != false) {
             command += " --xml types.xml";
         }
-        command += " -D sourcemap=" + (this.snbProjJson.sourcemap ? "true" : "false");
+        if (this.snbProjJson.sourcemap != false) {
+            command += " -D source-map";
+        }
         command += " -lua " + this.projDirPath + this.snbProjJson.luabin;
 
         var librariesStr = "";
