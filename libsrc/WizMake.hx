@@ -5,7 +5,7 @@ class WizMake {
     public var snbprojPath: String;
     public var projDirPath: String;
 
-    public var snbProjJson: Dynamic;
+    public var snbProjJson: SunabaProject;
 
     public function new() {}
 
@@ -23,6 +23,16 @@ class WizMake {
             var json = sys.io.File.getContent(snbprojPath);
             this.snbProjJson = haxe.Json.parse(json);
 
+            Sys.println("Project name: " + this.snbProjJson.name);
+            Sys.println("Project version: " + this.snbProjJson.version);
+            Sys.println("Project type: " + this.snbProjJson.type);
+            Sys.println("Script directory: " + this.snbProjJson.scriptdir);
+            Sys.println("API symbols enabled: " + this.snbProjJson.apisymbols);
+            Sys.println("Source map enabled: " + this.snbProjJson.sourcemap);
+            Sys.println("Entrypoint: " + this.snbProjJson.entrypoint);
+            Sys.println("Lua binary: " + this.snbProjJson.luabin);
+            Sys.println("Libraries: " + this.snbProjJson.libraries.join(", "));
+            Sys.println("Compiler flags: " + this.snbProjJson.compilerFlags.join(", "));
             Sys.println("Successfully loaded project JSON.");
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
