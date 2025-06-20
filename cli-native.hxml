@@ -1,0 +1,4 @@
+--class-path clisrc
+--main Main
+--library tsukuru
+--hl out/tsukuru.c
