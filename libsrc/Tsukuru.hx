@@ -55,6 +55,13 @@ class Tsukuru {
                 if (zipOutputPath == "") {
                     zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
                 }
+                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
+                    Sys.println("Warning: Output path ends with .sblib, changing to .sbx");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".sblib", ".sbx");
+                }
+                else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
+                    // Do nothing, already correct
+                }
                 else {
                     zipOutputPath += ".sbx";
                 }
@@ -62,6 +69,13 @@ class Tsukuru {
             else if (snbProjJson.type == "library") {
                 if (zipOutputPath == "") {
                     zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sblib";
+                }
+                else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
+                    Sys.println("Warning: Output path ends with .sbx, changing to .sblib");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".sbx", ".sblib");
+                }
+                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
+                    // Do nothing, already correct
                 }
                 else {
                     zipOutputPath += ".sblib";
