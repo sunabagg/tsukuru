@@ -67,7 +67,7 @@ class Tsukuru {
 
             Sys.println("Output path for binary: " + zipOutputPath);
 
-            var hxres = Sys.command(command);
+            var hxres = Sys.command("cd " + this.projDirPath + " && " + command);
             if (hxres != 0) {
                 Sys.println("Haxe build command failed with exit code: " + hxres);
                 Sys.exit(hxres);
@@ -135,7 +135,7 @@ class Tsukuru {
             if (this.snbProjJson.apisymbols != false) {
                 var typesXmlPath = this.projDirPath + "/types.xml";
                 if (FileSystem.exists(typesXmlPath)) {
-                    Sys.println("Adding types XML file: types.xml");
+                    Sys.println("Adding types XML file: /types.xml");
                     var typesXmlContent = File.getBytes(typesXmlPath);
                     var typesXmlEntry:haxe.zip.Entry = {
                         fileName: "/types.xml",
@@ -155,7 +155,7 @@ class Tsukuru {
             // Add all asset files to the zip
             for (assetKey in assetKeys) {
                 var assetContent = assets.get(assetKey);
-                Sys.println("Adding asset file: assets/" + assetKey);
+                Sys.println("Adding asset file: " + assetKey);
                 var assetEntry:haxe.zip.Entry = {
                     fileName: assetKey,
                     fileSize: assetContent.length,
