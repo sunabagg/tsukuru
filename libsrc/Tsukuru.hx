@@ -82,6 +82,9 @@ class Tsukuru {
                 Sys.exit(1);
                 return;
             }
+
+            Sys.println("Reading main Lua file: " + mainLuaPath);
+            var mainLuaContent = File.getContent(mainLuaPath);
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
