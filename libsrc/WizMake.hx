@@ -62,6 +62,8 @@ class WizMake {
             Sys.println("Generated Haxe build command: " + command);
 
             Sys.println("Output path for binary: " + zipOutputPath);
+
+            Sys.command(command);
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);
