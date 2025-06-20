@@ -227,7 +227,8 @@ class Tsukuru {
             } else {
                 // Read file content
                 var content = File.getContent(filePath);
-                assets.set(f, Bytes.ofString(content));
+                var vfilePath = StringTools.replace(filePath, this.projDirPath, "");
+                assets.set(vfilePath, Bytes.ofString(content));
             }
         }
 
