@@ -20,6 +20,9 @@ class Tsukuru {
 
     public function build(snbprojPath: String): Void {
         Sys.println("Building project at: " + snbprojPath);
+
+        snbprojPath = FileSystem.absolutePath(snbprojPath);
+
         // Here you would implement the logic to build the project
         // For now, we just print a message
         this.snbprojPath = snbprojPath;
