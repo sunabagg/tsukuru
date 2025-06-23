@@ -12,7 +12,7 @@ class Tsukuru {
 
     public var snbProjJson: SunabaProject;
 
-    private var zipOutputPath: String;
+    public var zipOutputPath: String = "";
 
     public var haxePath: String = "haxe"; // Default path to Haxe compiler
 
@@ -52,10 +52,34 @@ class Tsukuru {
             Sys.println("Compiler flags: " + this.snbProjJson.compilerFlags.join(", "));
 
             if (snbProjJson.type == "executable") {
-                zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
+                if (zipOutputPath == "") {
+                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
+                }
+                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
+                    Sys.println("Warning: Output path ends with .sblib, changing to .sbx");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".sblib", ".sbx");
+                }
+                else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
+                    // Do nothing, already correct
+                }
+                else {
+                    zipOutputPath += ".sbx";
+                }
             }
             else if (snbProjJson.type == "library") {
-                zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sblib";
+                if (zipOutputPath == "") {
+                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sblib";
+                }
+                else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
+                    Sys.println("Warning: Output path ends with .sbx, changing to .sblib");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".sbx", ".sblib");
+                }
+                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
+                    // Do nothing, already correct
+                }
+                else {
+                    zipOutputPath += ".sblib";
+                }
             } else {
                 Sys.println("Unknown project type: " + this.snbProjJson.type);
                 Sys.exit(1);
