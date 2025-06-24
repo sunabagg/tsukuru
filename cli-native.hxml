@@ -2,3 +2,4 @@
 --main Main
 --library tsukuru
 --cpp bin/cpp
+-D HAXE_OUTPUT_FILE=tsukuru
