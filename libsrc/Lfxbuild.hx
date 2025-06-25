@@ -56,26 +56,26 @@ class Lfxbuild {
 
             if (lfxprojJson.type == "executable") {
                 if (zipOutputPath == "") {
-                    zipOutputPath = this.projDirPath + "/bin/" + this.lfxprojJson.name + ".sbx";
+                    zipOutputPath = this.projDirPath + "/bin/" + this.lfxprojJson.name + ".lfx";
                 }
                 else if (StringTools.endsWith(zipOutputPath, ".ldll")) {
-                    Sys.println("Warning: Output path ends with .ldll, changing to .sbx");
-                    zipOutputPath = StringTools.replace(zipOutputPath, ".ldll", ".sbx");
+                    Sys.println("Warning: Output path ends with .ldll, changing to .lfx");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".ldll", ".lfx");
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
+                else if (StringTools.endsWith(zipOutputPath, ".lfx")) {
                     // Do nothing, already correct
                 }
                 else {
-                    zipOutputPath += ".sbx";
+                    zipOutputPath += ".lfx";
                 }
             }
             else if (lfxprojJson.type == "library") {
                 if (zipOutputPath == "") {
                     zipOutputPath = this.projDirPath + "/bin/" + this.lfxprojJson.name + ".ldll";
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
-                    Sys.println("Warning: Output path ends with .sbx, changing to .ldll");
-                    zipOutputPath = StringTools.replace(zipOutputPath, ".sbx", ".ldll");
+                else if (StringTools.endsWith(zipOutputPath, ".lfx")) {
+                    Sys.println("Warning: Output path ends with .lfx, changing to .ldll");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".lfx", ".ldll");
                 }
                 else if (StringTools.endsWith(zipOutputPath, ".ldll")) {
                     // Do nothing, already correct
@@ -226,7 +226,7 @@ class Lfxbuild {
             out.close();
 
             if (lfxprojJson.type == "executable") {
-                Sys.println("sbx file created successfully at: " + zipOutputPath);
+                Sys.println("lfx file created successfully at: " + zipOutputPath);
             }
             else if (lfxprojJson.type == "library") {
                 Sys.println("ldll file created successfully at: " + zipOutputPath);
