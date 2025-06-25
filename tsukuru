@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar bin/lfxbuild.jar $@
+java -jar bin/tsukuru.jar $@
