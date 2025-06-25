@@ -10,7 +10,7 @@ class Tsukuru {
     public var snbprojPath: String;
     public var projDirPath: String;
 
-    public var snbProjJson: SunabaProject;
+    public var snbProjJson: LucidfxProject;
 
     public var zipOutputPath: String = "";
 
@@ -240,7 +240,7 @@ class Tsukuru {
     }
 
     private function generateHaxeBuildCommand(): String {
-        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint + " --library sunaba-core";
+        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint + " --library lucidfx";
         if (this.snbProjJson.apisymbols != false) {
             command += " --xml " + this.projDirPath + "/types.xml";
         }

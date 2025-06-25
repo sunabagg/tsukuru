@@ -1,6 +1,6 @@
 package;
 
-typedef SunabaProject = {
+typedef LucidfxProject = {
     var name: String;
     var version: String;
     var rootUrl: String;
