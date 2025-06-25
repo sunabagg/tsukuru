@@ -113,12 +113,6 @@ class Tsukuru {
             Sys.println("Reading main Lua file: " + mainLuaPath);
             var mainLuaContent = File.getBytes(mainLuaPath);
 
-            var assets = this.getAllFiles(this.projDirPath + "/assets");
-
-            var assetKeys = [];
-            for (k in assets.keys()) assetKeys.push(k);
-            Sys.println("Found " + assetKeys.length + " asset files in the project.");
-
             // Create the zip file using haxe.zip.Writer
             Sys.println("Creating zip file at: " + zipOutputPath);
             var out = sys.io.File.write(zipOutputPath, true);
@@ -180,21 +174,32 @@ class Tsukuru {
                 }
             }
 
-            // Add all asset files to the zip
-            for (assetKey in assetKeys) {
-                var assetContent = assets.get(assetKey);
-                Sys.println("Adding asset file: " + assetKey);
-                var assetEntry:haxe.zip.Entry = {
-                    fileName: assetKey,
-                    fileSize: assetContent.length,
-                    dataSize: assetContent.length,
-                    fileTime: Date.now(),
-                    data: assetContent,
-                    crc32: haxe.crypto.Crc32.make(assetContent),
-                    compressed: false
-                };
-                entries.add(assetEntry);
+
+            var assetPath = this.projDirPath + "/assets";
+            if (FileSystem.exists(assetPath)) {
+                var assets = this.getAllFiles(assetPath);
+
+                var assetKeys = [];
+                for (k in assets.keys()) assetKeys.push(k);
+                Sys.println("Found " + assetKeys.length + " asset files in the project.");
+
+                // Add all asset files to the zip
+                for (assetKey in assetKeys) {
+                    var assetContent = assets.get(assetKey);
+                    Sys.println("Adding asset file: " + assetKey);
+                    var assetEntry:haxe.zip.Entry = {
+                        fileName: assetKey,
+                        fileSize: assetContent.length,
+                        dataSize: assetContent.length,
+                        fileTime: Date.now(),
+                        data: assetContent,
+                        crc32: haxe.crypto.Crc32.make(assetContent),
+                        compressed: false
+                    };
+                    entries.add(assetEntry);
+                }
             }
+            
 
             Sys.println("creating header for zip file");
 
