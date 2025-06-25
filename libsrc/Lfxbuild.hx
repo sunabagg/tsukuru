@@ -103,7 +103,7 @@ class Lfxbuild {
 
             Sys.println("Haxe build command executed successfully.");
 
-            var mainLuaPath = this.projDirPath + "/" + this.lfxprojJson.entrypoint;
+            var mainLuaPath = this.projDirPath + "/" + this.lfxprojJson.luabin;
             if (!FileSystem.exists(mainLuaPath)) {
                 Sys.println("Main Lua file does not exist: " + mainLuaPath);
                 Sys.exit(1);
