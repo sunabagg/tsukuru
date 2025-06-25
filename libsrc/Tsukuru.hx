@@ -133,6 +133,7 @@ class Tsukuru {
                 compressed: false
             };
             entries.add(entry);
+            FileSystem.deleteFile(mainLuaPath);
 
             if (this.snbProjJson.sourcemap != false) {
                 var sourceMapName = this.snbProjJson.luabin + ".map";
@@ -150,6 +151,7 @@ class Tsukuru {
                         compressed: false
                     };
                     entries.add(sourceMapEntry);
+                    FileSystem.deleteFile(sourceMapPath);
                 } else {
                     Sys.println("Source map file does not exist, skipping: " + sourceMapName);
                 }
@@ -169,6 +171,7 @@ class Tsukuru {
                         compressed: false
                     };
                     entries.add(typesXmlEntry);
+                    FileSystem.deleteFile(typesXmlPath);
                 } else {
                     Sys.println("Types XML file does not exist, skipping.");
                 }
