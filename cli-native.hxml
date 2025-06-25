@@ -1,5 +1,5 @@
 --class-path clisrc
 --main Main
---library tsukuru
+--library lfxbuild
 --cpp bin/cpp
--D HAXE_OUTPUT_FILE=tsukuru
+-D HAXE_OUTPUT_FILE=lfxbuild

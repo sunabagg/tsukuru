@@ -5,12 +5,12 @@ import haxe.ds.StringMap;
 import sys.io.File;
 import sys.FileSystem;
 
-class Tsukuru {
+class Lfxbuild {
 
-    public var snbprojPath: String;
+    public var lfxprojPath: String;
     public var projDirPath: String;
 
-    public var snbProjJson: SunabaProject;
+    public var lfxprojJson: LucidfxProject;
 
     public var zipOutputPath: String = "";
 
@@ -18,16 +18,16 @@ class Tsukuru {
 
     public function new() {}
 
-    public function build(snbprojPath: String): Void {
-        Sys.println("Building project at: " + snbprojPath);
+    public function build(lfxprojPath: String): Void {
+        Sys.println("Building project at: " + lfxprojPath);
 
-        snbprojPath = FileSystem.absolutePath(snbprojPath);
+        lfxprojPath = FileSystem.absolutePath(lfxprojPath);
 
         // Here you would implement the logic to build the project
         // For now, we just print a message
-        this.snbprojPath = snbprojPath;
-        var snbProjPathArray = snbprojPath.split("/");
-        this.projDirPath = snbProjPathArray.slice(0, snbProjPathArray.length - 1).join("/");
+        this.lfxprojPath = lfxprojPath;
+        var lfxprojPathArray = lfxprojPath.split("/");
+        this.projDirPath = lfxprojPathArray.slice(0, lfxprojPathArray.length - 1).join("/");
         Sys.println("Project directory path: " + this.projDirPath);
         var binPath = this.projDirPath + "/bin";
         if (!FileSystem.exists(binPath)) {
@@ -39,28 +39,28 @@ class Tsukuru {
 
         // Load the XML project file
         try {
-            var json = sys.io.File.getContent(snbprojPath);
-            this.snbProjJson = haxe.Json.parse(json);
+            var json = sys.io.File.getContent(lfxprojPath);
+            this.lfxprojJson = haxe.Json.parse(json);
             Sys.println("Successfully loaded project JSON.");
 
-            Sys.println("Project name: " + this.snbProjJson.name);
-            Sys.println("Project version: " + this.snbProjJson.version);
-            Sys.println("Project type: " + this.snbProjJson.type);
-            Sys.println("Script directory: " + this.snbProjJson.scriptdir);
-            Sys.println("API symbols enabled: " + this.snbProjJson.apisymbols);
-            Sys.println("Source map enabled: " + this.snbProjJson.sourcemap);
-            Sys.println("Entrypoint: " + this.snbProjJson.entrypoint);
-            Sys.println("Lua binary: " + this.snbProjJson.luabin);
-            Sys.println("Libraries: " + this.snbProjJson.libraries.join(", "));
-            Sys.println("Compiler flags: " + this.snbProjJson.compilerFlags.join(", "));
+            Sys.println("Project name: " + this.lfxprojJson.name);
+            Sys.println("Project version: " + this.lfxprojJson.version);
+            Sys.println("Project type: " + this.lfxprojJson.type);
+            Sys.println("Script directory: " + this.lfxprojJson.scriptdir);
+            Sys.println("API symbols enabled: " + this.lfxprojJson.apisymbols);
+            Sys.println("Source map enabled: " + this.lfxprojJson.sourcemap);
+            Sys.println("Entrypoint: " + this.lfxprojJson.entrypoint);
+            Sys.println("Lua binary: " + this.lfxprojJson.luabin);
+            Sys.println("Libraries: " + this.lfxprojJson.libraries.join(", "));
+            Sys.println("Compiler flags: " + this.lfxprojJson.compilerFlags.join(", "));
 
-            if (snbProjJson.type == "executable") {
+            if (lfxprojJson.type == "executable") {
                 if (zipOutputPath == "") {
-                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
+                    zipOutputPath = this.projDirPath + "/bin/" + this.lfxprojJson.name + ".sbx";
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
-                    Sys.println("Warning: Output path ends with .sblib, changing to .sbx");
-                    zipOutputPath = StringTools.replace(zipOutputPath, ".sblib", ".sbx");
+                else if (StringTools.endsWith(zipOutputPath, ".ldll")) {
+                    Sys.println("Warning: Output path ends with .ldll, changing to .sbx");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".ldll", ".sbx");
                 }
                 else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
                     // Do nothing, already correct
@@ -69,22 +69,22 @@ class Tsukuru {
                     zipOutputPath += ".sbx";
                 }
             }
-            else if (snbProjJson.type == "library") {
+            else if (lfxprojJson.type == "library") {
                 if (zipOutputPath == "") {
-                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sblib";
+                    zipOutputPath = this.projDirPath + "/bin/" + this.lfxprojJson.name + ".ldll";
                 }
                 else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
-                    Sys.println("Warning: Output path ends with .sbx, changing to .sblib");
-                    zipOutputPath = StringTools.replace(zipOutputPath, ".sbx", ".sblib");
+                    Sys.println("Warning: Output path ends with .sbx, changing to .ldll");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".sbx", ".ldll");
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
+                else if (StringTools.endsWith(zipOutputPath, ".ldll")) {
                     // Do nothing, already correct
                 }
                 else {
-                    zipOutputPath += ".sblib";
+                    zipOutputPath += ".ldll";
                 }
             } else {
-                Sys.println("Unknown project type: " + this.snbProjJson.type);
+                Sys.println("Unknown project type: " + this.lfxprojJson.type);
                 Sys.exit(1);
                 return;
             }
@@ -103,7 +103,7 @@ class Tsukuru {
 
             Sys.println("Haxe build command executed successfully.");
 
-            var mainLuaPath = this.projDirPath + "/" + this.snbProjJson.entrypoint;
+            var mainLuaPath = this.projDirPath + "/" + this.lfxprojJson.entrypoint;
             if (!FileSystem.exists(mainLuaPath)) {
                 Sys.println("Main Lua file does not exist: " + mainLuaPath);
                 Sys.exit(1);
@@ -127,10 +127,10 @@ class Tsukuru {
             // Collect all zip entries in a list
             var entries = new haxe.ds.List<haxe.zip.Entry>();
 
-            Sys.println("Adding main Lua file to zip: " + this.snbProjJson.luabin);
+            Sys.println("Adding main Lua file to zip: " + this.lfxprojJson.luabin);
             // Add main Lua file to the zip
             var entry:haxe.zip.Entry = {
-                fileName: this.snbProjJson.luabin,
+                fileName: this.lfxprojJson.luabin,
                 fileTime: Date.now(),
                 dataSize: mainLuaContent.length,
                 fileSize: mainLuaContent.length,
@@ -140,8 +140,8 @@ class Tsukuru {
             };
             entries.add(entry);
 
-            if (this.snbProjJson.sourcemap != false) {
-                var sourceMapName = this.snbProjJson.luabin + ".map";
+            if (this.lfxprojJson.sourcemap != false) {
+                var sourceMapName = this.lfxprojJson.luabin + ".map";
                 var sourceMapPath = this.projDirPath + "/" + sourceMapName;
                 if (FileSystem.exists(sourceMapPath)) {
                     Sys.println("Adding source map file: " + sourceMapName);
@@ -160,7 +160,7 @@ class Tsukuru {
                     Sys.println("Source map file does not exist, skipping: " + sourceMapName);
                 }
             }
-            if (this.snbProjJson.apisymbols != false) {
+            if (this.lfxprojJson.apisymbols != false) {
                 var typesXmlPath = this.projDirPath + "/types.xml";
                 if (FileSystem.exists(typesXmlPath)) {
                     Sys.println("Adding types XML file: types.xml");
@@ -199,11 +199,11 @@ class Tsukuru {
             Sys.println("creating header for zip file");
 
             var header : HeaderFile = {
-                name: this.snbProjJson.name,
-                version: this.snbProjJson.version,
-                rootUrl: this.snbProjJson.rootUrl,
-                luabin: this.snbProjJson.luabin,
-                type: this.snbProjJson.type
+                name: this.lfxprojJson.name,
+                version: this.lfxprojJson.version,
+                rootUrl: this.lfxprojJson.rootUrl,
+                luabin: this.lfxprojJson.luabin,
+                type: this.lfxprojJson.type
             };
 
             var headerJson = haxe.Json.stringify(header);
@@ -225,11 +225,11 @@ class Tsukuru {
             // Close the output stream
             out.close();
 
-            if (snbProjJson.type == "executable") {
+            if (lfxprojJson.type == "executable") {
                 Sys.println("sbx file created successfully at: " + zipOutputPath);
             }
-            else if (snbProjJson.type == "library") {
-                Sys.println("sblib file created successfully at: " + zipOutputPath);
+            else if (lfxprojJson.type == "library") {
+                Sys.println("ldll file created successfully at: " + zipOutputPath);
             }
             
         } catch (e: Dynamic) {
@@ -240,20 +240,20 @@ class Tsukuru {
     }
 
     private function generateHaxeBuildCommand(): String {
-        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint + " --library sunaba-core";
-        if (this.snbProjJson.apisymbols != false) {
+        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.lfxprojJson.scriptdir + " -main " + this.lfxprojJson.entrypoint + " --library lucidfx";
+        if (this.lfxprojJson.apisymbols != false) {
             command += " --xml " + this.projDirPath + "/types.xml";
         }
-        if (this.snbProjJson.sourcemap != false) {
+        if (this.lfxprojJson.sourcemap != false) {
             command += " -D source-map";
         }
-        command += " -lua " + this.projDirPath + "/" + this.snbProjJson.luabin += " -D lua-vanilla";
+        command += " -lua " + this.projDirPath + "/" + this.lfxprojJson.luabin += " -D lua-vanilla";
 
         var librariesStr = "";
-        for (lib in this.snbProjJson.libraries) {
+        for (lib in this.lfxprojJson.libraries) {
             librariesStr += " --library " + lib;
         }
-        command += " " + this.snbProjJson.compilerFlags.join(" ");
+        command += " " + this.lfxprojJson.compilerFlags.join(" ");
         return command;
     }
 

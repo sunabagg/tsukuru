@@ -1,4 +1,4 @@
 --class-path clisrc
 --main Main
---library tsukuru
---neko bin/tsukuru.n
+--library lfxbuild
+--neko bin/lfxbuild.n

@@ -1,4 +1,4 @@
 --class-path clisrc
 --main Main
---library tsukuru
---hl bin/tsukuru.hl
+--library lfxbuild
+--hl bin/lfxbuild.hl
