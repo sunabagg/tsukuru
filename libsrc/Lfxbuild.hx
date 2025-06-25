@@ -58,9 +58,9 @@ class Lfxbuild {
                 if (zipOutputPath == "") {
                     zipOutputPath = this.projDirPath + "/bin/" + this.lfxprojJson.name + ".sbx";
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
-                    Sys.println("Warning: Output path ends with .sblib, changing to .sbx");
-                    zipOutputPath = StringTools.replace(zipOutputPath, ".sblib", ".sbx");
+                else if (StringTools.endsWith(zipOutputPath, ".ldll")) {
+                    Sys.println("Warning: Output path ends with .ldll, changing to .sbx");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".ldll", ".sbx");
                 }
                 else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
                     // Do nothing, already correct
@@ -71,17 +71,17 @@ class Lfxbuild {
             }
             else if (lfxprojJson.type == "library") {
                 if (zipOutputPath == "") {
-                    zipOutputPath = this.projDirPath + "/bin/" + this.lfxprojJson.name + ".sblib";
+                    zipOutputPath = this.projDirPath + "/bin/" + this.lfxprojJson.name + ".ldll";
                 }
                 else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
-                    Sys.println("Warning: Output path ends with .sbx, changing to .sblib");
-                    zipOutputPath = StringTools.replace(zipOutputPath, ".sbx", ".sblib");
+                    Sys.println("Warning: Output path ends with .sbx, changing to .ldll");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".sbx", ".ldll");
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
+                else if (StringTools.endsWith(zipOutputPath, ".ldll")) {
                     // Do nothing, already correct
                 }
                 else {
-                    zipOutputPath += ".sblib";
+                    zipOutputPath += ".ldll";
                 }
             } else {
                 Sys.println("Unknown project type: " + this.lfxprojJson.type);
@@ -229,7 +229,7 @@ class Lfxbuild {
                 Sys.println("sbx file created successfully at: " + zipOutputPath);
             }
             else if (lfxprojJson.type == "library") {
-                Sys.println("sblib file created successfully at: " + zipOutputPath);
+                Sys.println("ldll file created successfully at: " + zipOutputPath);
             }
             
         } catch (e: Dynamic) {
