@@ -39,9 +39,8 @@ jobs:
         with:
           # Version Spec of the version to use. Example: 4.3.1
           haxe-version: 4.3.6# default is 4.3.1
-
-      - name: Build
-        run: haxe cli-native.hxml
+      - run: |
+          haxe cli-native.hxml
 
       - name: Upload artifact
         if: matrix.build_type == 'Debug'
