@@ -1,5 +1,7 @@
 package;
 
+import sys.FileSystem;
+
 class Main {
     public static function main() {
         var args = Sys.args();
@@ -11,9 +13,9 @@ class Main {
         var tsukuru = new Tsukuru();
 
         var arg1 = args[1];
-        if (arg1 == "-O") {
+        if (arg1 == "-O" || arg1 == "-o") {
             var arg2 = args[2];
-            tsukuru.zipOutputPath = arg2;
+            tsukuru.zipOutputPath = FileSystem.absolutePath(arg2);
         }
         
         tsukuru.build(args[0]);
