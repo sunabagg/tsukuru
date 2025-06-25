@@ -240,7 +240,7 @@ class Tsukuru {
     }
 
     private function generateHaxeBuildCommand(): String {
-        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint + " --library sunaba-core";
+        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint + " --library sunaba";
         if (this.snbProjJson.apisymbols != false) {
             command += " --xml " + this.projDirPath + "/types.xml";
         }
