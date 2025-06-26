@@ -4,6 +4,9 @@ import sys.FileSystem;
 
 class Main {
     public static function main() {
+        var currentDirectory = Sys.getCwd();
+        trace(currentDirectory);
+
         var args = Sys.args();
         if (args.length < 1 || args[0] == "-h" || args[0] == "--help") {
             Sys.println("Usage: tsukuru <project.snbproj>");
@@ -29,6 +32,10 @@ class Main {
         if (snbprojpath == "") {
             Sys.println("Usage: tsukuru <project.snbproj>");
             return;
+        }
+
+        if (StringTools.contains(snbprojpath, "./")) {
+            snbprojpath = StringTools.replace(snbprojpath, "./", currentDirectory);
         }
 
         tsukuru.build(snbprojpath);
