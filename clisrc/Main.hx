@@ -18,17 +18,15 @@ class Main {
             tsukuru.zipOutputPath = FileSystem.absolutePath(arg2);
         }
         
-        var snbprojpath = args[0];
-        if (!StringTools.endsWith(snbprojpath, ".snbproj")) {
-            for (arg in args) {
-                if (StringTools.endsWith(arg, ".snbproj")) {
-                    snbprojpath = arg;
-                    break;
-                }
+        var snbprojpath = "";
+        for (arg in args) {
+            if (StringTools.endsWith(arg, ".snbproj")) {
+                snbprojpath = arg;
+                break;
             }
         }
 
-        if (!StringTools.endsWith(snbprojpath, ".snbproj")) {
+        if (snbprojpath == "") {
             Sys.println("Usage: tsukuru <project.snbproj>");
             return;
         }
