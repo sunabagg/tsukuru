@@ -47,6 +47,7 @@ class Tsukuru {
             Sys.println("Project version: " + this.snbProjJson.version);
             Sys.println("Project type: " + this.snbProjJson.type);
             Sys.println("Script directory: " + this.snbProjJson.scriptdir);
+            Sys.println("Assets directory: " + this.snbProjJson.assetsdir);
             Sys.println("API symbols enabled: " + this.snbProjJson.apisymbols);
             Sys.println("Source map enabled: " + this.snbProjJson.sourcemap);
             Sys.println("Entrypoint: " + this.snbProjJson.entrypoint);
@@ -178,7 +179,7 @@ class Tsukuru {
             }
 
 
-            var assetPath = this.projDirPath + "/assets";
+            var assetPath = this.projDirPath + "/" + this.snbProjJson.assetsdir;
             if (FileSystem.exists(assetPath)) {
                 var assets = this.getAllFiles(assetPath);
 
