@@ -9,7 +9,7 @@ class Main {
 
         var args = Sys.args();
         if (args.length < 1 || args[0] == "-h" || args[0] == "--help") {
-            Sys.println("Usage: tsukuru <project.snbproj>");
+            Sys.println("Usage: tsukuru <project.knproj>");
             return;
         }
 
@@ -21,23 +21,23 @@ class Main {
             tsukuru.zipOutputPath = FileSystem.absolutePath(arg2);
         }
         
-        var snbprojpath = "";
+        var knprojpath = "";
         for (arg in args) {
-            if (StringTools.endsWith(arg, ".snbproj")) {
-                snbprojpath = arg;
+            if (StringTools.endsWith(arg, ".knproj")) {
+                knprojpath = arg;
                 break;
             }
         }
 
-        if (snbprojpath == "") {
-            Sys.println("Usage: tsukuru <project.snbproj>");
+        if (knprojpath == "") {
+            Sys.println("Usage: tsukuru <project.knproj>");
             return;
         }
 
-        if (StringTools.contains(snbprojpath, "./")) {
-            snbprojpath = StringTools.replace(snbprojpath, "./", currentDirectory);
+        if (StringTools.contains(knprojpath, "./")) {
+            knprojpath = StringTools.replace(knprojpath, "./", currentDirectory);
         }
 
-        tsukuru.build(snbprojpath);
+        tsukuru.build(knprojpath);
     }
 }

@@ -7,10 +7,10 @@ import sys.FileSystem;
 
 class Tsukuru {
 
-    public var snbprojPath: String;
+    public var knprojPath: String;
     public var projDirPath: String;
 
-    public var snbProjJson: SunabaProject;
+    public var knprojJson: SunabaProject;
 
     public var zipOutputPath: String = "";
 
@@ -18,16 +18,16 @@ class Tsukuru {
 
     public function new() {}
 
-    public function build(snbprojPath: String): Void {
-        Sys.println("Building project at: " + snbprojPath);
+    public function build(knprojPath: String): Void {
+        Sys.println("Building project at: " + knprojPath);
 
-        //snbprojPath = FileSystem.absolutePath(snbprojPath);
+        //knprojPath = FileSystem.absolutePath(knprojPath);
 
         // Here you would implement the logic to build the project
         // For now, we just print a message
-        this.snbprojPath = snbprojPath;
-        var snbProjPathArray = snbprojPath.split("/");
-        this.projDirPath = snbProjPathArray.slice(0, snbProjPathArray.length - 1).join("/");
+        this.knprojPath = knprojPath;
+        var knprojPathArray = knprojPath.split("/");
+        this.projDirPath = knprojPathArray.slice(0, knprojPathArray.length - 1).join("/");
         Sys.println("Project directory path: " + this.projDirPath);
         var binPath = this.projDirPath + "/bin";
         if (!FileSystem.exists(binPath)) {
@@ -39,25 +39,25 @@ class Tsukuru {
 
         // Load the XML project file
         try {
-            var json = sys.io.File.getContent(snbprojPath);
-            this.snbProjJson = haxe.Json.parse(json);
+            var json = sys.io.File.getContent(knprojPath);
+            this.knprojJson = haxe.Json.parse(json);
             Sys.println("Successfully loaded project JSON.");
 
-            Sys.println("Project name: " + this.snbProjJson.name);
-            Sys.println("Project version: " + this.snbProjJson.version);
-            Sys.println("Project type: " + this.snbProjJson.type);
-            Sys.println("Script directory: " + this.snbProjJson.scriptdir);
-            Sys.println("Assets directory: " + this.snbProjJson.assetsdir);
-            Sys.println("API symbols enabled: " + this.snbProjJson.apisymbols);
-            Sys.println("Source map enabled: " + this.snbProjJson.sourcemap);
-            Sys.println("Entrypoint: " + this.snbProjJson.entrypoint);
-            Sys.println("Lua binary: " + this.snbProjJson.luabin);
-            Sys.println("Libraries: " + this.snbProjJson.libraries.join(", "));
-            Sys.println("Compiler flags: " + this.snbProjJson.compilerFlags.join(", "));
+            Sys.println("Project name: " + this.knprojJson.name);
+            Sys.println("Project version: " + this.knprojJson.version);
+            Sys.println("Project type: " + this.knprojJson.type);
+            Sys.println("Script directory: " + this.knprojJson.scriptdir);
+            Sys.println("Assets directory: " + this.knprojJson.assetsdir);
+            Sys.println("API symbols enabled: " + this.knprojJson.apisymbols);
+            Sys.println("Source map enabled: " + this.knprojJson.sourcemap);
+            Sys.println("Entrypoint: " + this.knprojJson.entrypoint);
+            Sys.println("Lua binary: " + this.knprojJson.luabin);
+            Sys.println("Libraries: " + this.knprojJson.libraries.join(", "));
+            Sys.println("Compiler flags: " + this.knprojJson.compilerFlags.join(", "));
 
-            if (snbProjJson.type == "executable") {
+            if (knprojJson.type == "executable") {
                 if (zipOutputPath == "") {
-                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".knx";
+                    zipOutputPath = this.projDirPath + "/bin/" + this.knprojJson.name + ".knx";
                 }
                 else if (StringTools.endsWith(zipOutputPath, ".kdll")) {
                     Sys.println("Warning: Output path ends with .kdll, changing to .knx");
@@ -70,9 +70,9 @@ class Tsukuru {
                     zipOutputPath += ".knx";
                 }
             }
-            else if (snbProjJson.type == "library") {
+            else if (knprojJson.type == "library") {
                 if (zipOutputPath == "") {
-                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".kdll";
+                    zipOutputPath = this.projDirPath + "/bin/" + this.knprojJson.name + ".kdll";
                 }
                 else if (StringTools.endsWith(zipOutputPath, ".knx")) {
                     Sys.println("Warning: Output path ends with .knx, changing to .kdll");
@@ -85,7 +85,7 @@ class Tsukuru {
                     zipOutputPath += ".kdll";
                 }
             } else {
-                Sys.println("Unknown project type: " + this.snbProjJson.type);
+                Sys.println("Unknown project type: " + this.knprojJson.type);
                 Sys.exit(1);
                 return;
             }
@@ -104,7 +104,7 @@ class Tsukuru {
 
             Sys.println("Haxe build command executed successfully.");
 
-            var mainLuaPath = this.projDirPath + "/" + this.snbProjJson.luabin;
+            var mainLuaPath = this.projDirPath + "/" + this.knprojJson.luabin;
             if (!FileSystem.exists(mainLuaPath)) {
                 Sys.println("Main Lua file does not exist: " + mainLuaPath);
                 Sys.exit(1);
@@ -122,10 +122,10 @@ class Tsukuru {
             // Collect all zip entries in a list
             var entries = new haxe.ds.List<haxe.zip.Entry>();
 
-            Sys.println("Adding main Lua file to zip: " + this.snbProjJson.luabin);
+            Sys.println("Adding main Lua file to zip: " + this.knprojJson.luabin);
             // Add main Lua file to the zip
             var entry:haxe.zip.Entry = {
-                fileName: this.snbProjJson.luabin,
+                fileName: this.knprojJson.luabin,
                 fileTime: Date.now(),
                 dataSize: mainLuaContent.length,
                 fileSize: mainLuaContent.length,
@@ -136,8 +136,8 @@ class Tsukuru {
             entries.add(entry);
             FileSystem.deleteFile(mainLuaPath);
 
-            if (this.snbProjJson.sourcemap != false) {
-                var sourceMapName = this.snbProjJson.luabin + ".map";
+            if (this.knprojJson.sourcemap != false) {
+                var sourceMapName = this.knprojJson.luabin + ".map";
                 var sourceMapPath = this.projDirPath + "/" + sourceMapName;
                 if (FileSystem.exists(sourceMapPath)) {
                     Sys.println("Adding source map file: " + sourceMapName);
@@ -157,7 +157,7 @@ class Tsukuru {
                     Sys.println("Source map file does not exist, skipping: " + sourceMapName);
                 }
             }
-            if (this.snbProjJson.apisymbols != false) {
+            if (this.knprojJson.apisymbols != false) {
                 var typesXmlPath = this.projDirPath + "/types.xml";
                 if (FileSystem.exists(typesXmlPath)) {
                     Sys.println("Adding types XML file: types.xml");
@@ -179,7 +179,7 @@ class Tsukuru {
             }
 
 
-            var assetPath = this.projDirPath + "/" + this.snbProjJson.assetsdir;
+            var assetPath = this.projDirPath + "/" + this.knprojJson.assetsdir;
             if (FileSystem.exists(assetPath)) {
                 var assets = this.getAllFiles(assetPath);
 
@@ -208,11 +208,11 @@ class Tsukuru {
             Sys.println("creating header for zip file");
 
             var header : HeaderFile = {
-                name: this.snbProjJson.name,
-                version: this.snbProjJson.version,
-                rootUrl: this.snbProjJson.rootUrl,
-                luabin: this.snbProjJson.luabin,
-                type: this.snbProjJson.type
+                name: this.knprojJson.name,
+                version: this.knprojJson.version,
+                rootUrl: this.knprojJson.rootUrl,
+                luabin: this.knprojJson.luabin,
+                type: this.knprojJson.type
             };
 
             var headerJson = haxe.Json.stringify(header);
@@ -234,10 +234,10 @@ class Tsukuru {
             // Close the output stream
             out.close();
 
-            if (snbProjJson.type == "executable") {
+            if (knprojJson.type == "executable") {
                 Sys.println("knx file created successfully at: " + zipOutputPath);
             }
-            else if (snbProjJson.type == "library") {
+            else if (knprojJson.type == "library") {
                 Sys.println("kdll file created successfully at: " + zipOutputPath);
             }
             
@@ -249,20 +249,20 @@ class Tsukuru {
     }
 
     private function generateHaxeBuildCommand(): String {
-        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.snbProjJson.scriptdir + " -main " + this.snbProjJson.entrypoint + " --library sunaba";
-        if (this.snbProjJson.apisymbols != false) {
+        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.knprojJson.scriptdir + " -main " + this.knprojJson.entrypoint + " --library sunaba";
+        if (this.knprojJson.apisymbols != false) {
             command += " --xml " + this.projDirPath + "/types.xml";
         }
-        if (this.snbProjJson.sourcemap != false) {
+        if (this.knprojJson.sourcemap != false) {
             command += " -D source-map";
         }
-        command += " -lua " + this.projDirPath + "/" + this.snbProjJson.luabin += " -D lua-vanilla";
+        command += " -lua " + this.projDirPath + "/" + this.knprojJson.luabin += " -D lua-vanilla";
 
         var librariesStr = "";
-        for (lib in this.snbProjJson.libraries) {
+        for (lib in this.knprojJson.libraries) {
             librariesStr += " --library " + lib;
         }
-        command += " " + this.snbProjJson.compilerFlags.join(" ");
+        command += " " + this.knprojJson.compilerFlags.join(" ");
         return command;
     }
 
