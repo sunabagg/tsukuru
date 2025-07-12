@@ -249,7 +249,7 @@ class Tsukuru {
     }
 
     private function generateHaxeBuildCommand(): String {
-        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.knprojJson.scriptdir + " -main " + this.knprojJson.entrypoint + " --library sunaba";
+        var command = this.haxePath + " --class-path " + this.projDirPath + "/" + this.knprojJson.scriptdir + " -main " + this.knprojJson.entrypoint + " --library kenai";
         if (this.knprojJson.apisymbols != false) {
             command += " --xml " + this.projDirPath + "/types.xml";
         }
