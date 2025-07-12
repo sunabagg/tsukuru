@@ -6,6 +6,7 @@ typedef SunabaProject = {
     var rootUrl: String;
     var type: String;
     var scriptdir: String;
+    var assetsdir: String;
     var apisymbols: Bool;
     var sourcemap: Bool;
     var entrypoint: String;
