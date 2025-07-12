@@ -21,7 +21,7 @@ class Tsukuru {
     public function build(snbprojPath: String): Void {
         Sys.println("Building project at: " + snbprojPath);
 
-        snbprojPath = FileSystem.absolutePath(snbprojPath);
+        //snbprojPath = FileSystem.absolutePath(snbprojPath);
 
         // Here you would implement the logic to build the project
         // For now, we just print a message
@@ -56,32 +56,32 @@ class Tsukuru {
 
             if (snbProjJson.type == "executable") {
                 if (zipOutputPath == "") {
-                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sbx";
+                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".knx";
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
-                    Sys.println("Warning: Output path ends with .sblib, changing to .sbx");
-                    zipOutputPath = StringTools.replace(zipOutputPath, ".sblib", ".sbx");
+                else if (StringTools.endsWith(zipOutputPath, ".kdll")) {
+                    Sys.println("Warning: Output path ends with .kdll, changing to .knx");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".kdll", ".knx");
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
+                else if (StringTools.endsWith(zipOutputPath, ".knx")) {
                     // Do nothing, already correct
                 }
                 else {
-                    zipOutputPath += ".sbx";
+                    zipOutputPath += ".knx";
                 }
             }
             else if (snbProjJson.type == "library") {
                 if (zipOutputPath == "") {
-                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".sblib";
+                    zipOutputPath = this.projDirPath + "/bin/" + this.snbProjJson.name + ".kdll";
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sbx")) {
-                    Sys.println("Warning: Output path ends with .sbx, changing to .sblib");
-                    zipOutputPath = StringTools.replace(zipOutputPath, ".sbx", ".sblib");
+                else if (StringTools.endsWith(zipOutputPath, ".knx")) {
+                    Sys.println("Warning: Output path ends with .knx, changing to .kdll");
+                    zipOutputPath = StringTools.replace(zipOutputPath, ".knx", ".kdll");
                 }
-                else if (StringTools.endsWith(zipOutputPath, ".sblib")) {
+                else if (StringTools.endsWith(zipOutputPath, ".kdll")) {
                     // Do nothing, already correct
                 }
                 else {
-                    zipOutputPath += ".sblib";
+                    zipOutputPath += ".kdll";
                 }
             } else {
                 Sys.println("Unknown project type: " + this.snbProjJson.type);
@@ -234,10 +234,10 @@ class Tsukuru {
             out.close();
 
             if (snbProjJson.type == "executable") {
-                Sys.println("sbx file created successfully at: " + zipOutputPath);
+                Sys.println("knx file created successfully at: " + zipOutputPath);
             }
             else if (snbProjJson.type == "library") {
-                Sys.println("sblib file created successfully at: " + zipOutputPath);
+                Sys.println("kdll file created successfully at: " + zipOutputPath);
             }
             
         } catch (e: Dynamic) {
