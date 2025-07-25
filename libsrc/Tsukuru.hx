@@ -234,9 +234,19 @@ class Tsukuru {
             // Close the output stream
             out.close();
 
-            //var zipStr = File.getContent(zipOutputPath);
-            //zipStr = "#!/usr/bin/env sunaba\n" + zipStr;
-            //File.saveBytes(zipOutputPath, haxe.io.Bytes.ofString(zipStr));
+            var shebang = "#!/usr/bin/env sunaba\n"; // or "#!/usr/bin/env sh\n"
+            var zipBytes = File.getBytes(zipOutputPath);
+            var shebangBytes = Bytes.ofString(shebang);
+        
+            // Combine shebang + zip
+            var outputBytes = Bytes.alloc(shebangBytes.length + zipBytes.length);
+            outputBytes.blit(0, shebangBytes, 0, shebangBytes.length);
+            outputBytes.blit(shebangBytes.length, zipBytes, 0, zipBytes.length);
+
+            // Write to new executable file
+            var out = File.write(zipOutputPath, true); // binary mode
+            out.write(outputBytes);
+            out.close();
 
             if (snbProjJson.type == "executable") {
                 Sys.println("sbx file created successfully at: " + zipOutputPath);
