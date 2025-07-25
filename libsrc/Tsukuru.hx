@@ -116,6 +116,109 @@ class Tsukuru {
             Sys.println("Reading main Lua file: " + mainLuaPath);
             var mainLuaContent = File.getBytes(mainLuaPath);
 
+            if (buildSbfs) {
+                Sys.println("Building SBFS file...");
+                // Here you would implement the logic to build the SBFS file
+                // For now, we just print a message
+                var virtualFs = new VirtualFs();
+                Sys.println("Virtual file system created.");
+
+                var mainLuaEntry = new FileNode();
+                mainLuaEntry.name = this.snbProjJson.luabin;
+                mainLuaEntry.id = 1; // Example ID, you can generate a unique ID
+                Sys.println("Main Lua file node created with ID: " + mainLuaEntry.id);
+                var mainLuaBase64 = haxe.io.Bytes.toBase64(mainLuaContent);
+                virtualFs.files.set(mainLuaEntry.id, mainLuaBase64);
+                virtualFs.root.children.push(mainLuaEntry);
+                Sys.println("Main Lua file added to virtual file system.");
+                FileSystem.deleteFile(mainLuaPath);
+
+                if (this.snbProjJson.sourcemap != false) {
+                    var sourceMapName = this.snbProjJson.luabin + ".map";
+                    var sourceMapPath = this.projDirPath + "/" + sourceMapName;
+                    if (FileSystem.exists(sourceMapPath)) {
+                        Sys.println("Adding source map file: " + sourceMapName);
+                        var sourceMapContent = File.getBytes(sourceMapPath);
+                        var sourceMapNode = new FileNode();
+                        sourceMapNode.name = sourceMapName;
+                        sourceMapNode.id = virtualFs.files.keys().length + 1; // Generate a new ID
+                        var sourceMapBase64 = haxe.io.Bytes.toBase64(sourceMapContent);
+                        virtualFs.files.set(sourceMapNode.id, sourceMapBase64);
+                        virtualFs.root.children.push(sourceMapNode);
+                        Sys.println("Source map file node created with ID: " + sourceMapNode.id);
+                        FileSystem.deleteFile(sourceMapPath);
+                    } else {
+                        Sys.println("Source map file does not exist, skipping: " + sourceMapName);
+                    }
+                }
+
+                if (this.snbProjJson.apisymbols != false) {
+                    var typesXmlPath = this.projDirPath + "/types.xml";
+                    if (FileSystem.exists(typesXmlPath)) {
+                        Sys.println("Adding types XML file: types.xml");
+                        var typesXmlContent = File.getBytes(typesXmlPath);
+                        var typesXmlNode = new FileNode();
+                        typesXmlNode.name = "types.xml";
+                        typesXmlNode.id = virtualFs.files.keys().length + 1; // Generate a new ID
+                        var typesXmlBase64 = haxe.io.Bytes.toBase64(typesXmlContent);
+                        virtualFs.files.set(typesXmlNode.id, typesXmlBase64);
+                        virtualFs.root.children.push(typesXmlNode);
+                        Sys.println("Types XML file node created with ID: " + typesXmlNode.id);
+                        FileSystem.deleteFile(typesXmlPath);
+                    } else {
+                        Sys.println("Types XML file does not exist, skipping.");
+                    }
+                }
+
+                // Add other files and directories to the virtual file system
+                var assetPath = this.projDirPath + "/" + this.snbProjJson.assetsDir;
+                if (FileSystem.exists(assetPath)) {
+                    Sys.println("Assets directory exists: " + assetPath);
+                    var assets = this.getAllFiles(assetPath);
+                    Sys.println("Found " + assets.keys().length + " asset files in the project.");
+                    for (assetKey in assets.keys()) {
+                        var assetContent = assets.get(assetKey);
+                        Sys.println("Adding asset file: " + assetKey);
+                        var assetNode = new FileNode();
+                        assetNode.name = StringTools.replace(assetKey, "assets/", "");
+                        assetNode.id = virtualFs.files.keys().length + 1; // Generate a new ID
+                        var assetBase64 = haxe.io.Bytes.toBase64(assetContent);
+                        virtualFs.files.set(assetNode.id, assetBase64);
+                        virtualFs.root.children.push(assetNode);
+                        Sys.println("Asset file node created with ID: " + assetNode.id);
+                    }
+                } else {
+                    Sys.println("Assets directory does not exist: " + assetPath);
+                }   
+
+                Sys.println("Creating Header for SBFS file");
+
+                var header: HeaderFile = {
+                    name: this.snbProjJson.name,
+                    version: this.snbProjJson.version,
+                    rootUrl: this.snbProjJson.rootUrl,
+                    luabin: this.snbProjJson.luabin,
+                    type: this.snbProjJson.type
+                };
+
+                var headerJson = haxe.Json.stringify(header);
+                Sys.println("Header JSON: " + headerJson);
+                var headerBytes = haxe.io.Bytes.ofString(headerJson);
+                var headerNode = new FileNode();
+                headerNode.name = "header.json";
+                headerNode.id = virtualFs.files.keys().length + 1; // Generate a new
+                var headerBase64 = haxe.io.Bytes.toBase64(headerBytes);
+                virtualFs.files.set(headerNode.id, headerBase64);
+                virtualFs.root.children.push(headerNode);
+                Sys.println("Header file node created with ID: " + headerNode.id);
+
+                Sys.println("SBFS file created successfully.");
+
+                var sbfsJson = Json.stringify(virtualFs, null, 2);
+
+                sbfsJson = "#SBFS\n" + sbfsJson;
+            }
+
             // Create the zip file using haxe.zip.Writer
             Sys.println("Creating zip file at: " + zipOutputPath);
             var out = sys.io.File.write(zipOutputPath, true);
