@@ -2,7 +2,8 @@ package;
 
 class VirtualFs {
     public var root: DirNode;
-    public var files: Map<Int, String> = new Map();
+    public var ids: Array<Int> = [];
+    public var fileContents: Array<String> = [];
 
     public function new() {
         root = new DirNode();

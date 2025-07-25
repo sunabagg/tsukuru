@@ -16,7 +16,7 @@ class Tsukuru {
 
     public var zipOutputPath: String = "";
 
-    public var buildSbfs: Bool = false; // Whether to build SBFS files
+    public var buildSbfs: Bool = true; // Whether to build SBFS files
 
     public var haxePath: String = "haxe"; // Default path to Haxe compiler
 
@@ -127,10 +127,11 @@ class Tsukuru {
 
                 var mainLuaEntry = new FileNode();
                 mainLuaEntry.name = this.snbProjJson.luabin;
-                mainLuaEntry.id = 1; // Example ID, you can generate a unique ID
+                mainLuaEntry.id = 0; // Example ID, you can generate a unique ID
                 Sys.println("Main Lua file node created with ID: " + mainLuaEntry.id);
                 var mainLuaBase64 = haxe.crypto.Base64.encode(mainLuaContent);
-                virtualFs.files.set(mainLuaEntry.id, mainLuaBase64);
+                virtualFs.ids.push(mainLuaEntry.id);
+                virtualFs.fileContents.push(mainLuaBase64);
                 virtualFs.root.children.push(mainLuaEntry);
                 Sys.println("Main Lua file added to virtual file system.");
                 FileSystem.deleteFile(mainLuaPath);
@@ -144,11 +145,12 @@ class Tsukuru {
                         var sourceMapNode = new FileNode();
                         sourceMapNode.name = sourceMapName;
                         sourceMapNode.id = 1; // Generate a new ID
-                        for (node in virtualFs.files.keys()) {
+                        for (node in virtualFs.ids) {
                             sourceMapNode.id++;
                         }
                         var sourceMapBase64 = haxe.crypto.Base64.encode(sourceMapContent);
-                        virtualFs.files.set(sourceMapNode.id, sourceMapBase64);
+                        virtualFs.ids.push(sourceMapNode.id);
+                        virtualFs.fileContents.push(sourceMapBase64);
                         virtualFs.root.children.push(sourceMapNode);
                         Sys.println("Source map file node created with ID: " + sourceMapNode.id);
                         FileSystem.deleteFile(sourceMapPath);
@@ -165,11 +167,11 @@ class Tsukuru {
                         var typesXmlNode = new FileNode();
                         typesXmlNode.name = "types.xml";
                         typesXmlNode.id = 1; // Generate a new ID
-                        for (node in virtualFs.files.keys()) {
+                        for (node in virtualFs.ids) {
                             typesXmlNode.id++;
                         }
-                        var typesXmlBase64 = haxe.crypto.Base64.encode(typesXmlContent);
-                        virtualFs.files.set(typesXmlNode.id, typesXmlBase64);
+                        virtualFs.ids.push(typesXmlNode.id);
+                        virtualFs.fileContents.push(haxe.crypto.Base64.encode(typesXmlContent));
                         virtualFs.root.children.push(typesXmlNode);
                         Sys.println("Types XML file node created with ID: " + typesXmlNode.id);
                         FileSystem.deleteFile(typesXmlPath);
@@ -194,11 +196,12 @@ class Tsukuru {
                         var assetNode = new FileNode();
                         assetNode.name = StringTools.replace(assetKey, "assets/", "");
                         assetNode.id = 1; // Generate a new ID
-                        for (node in virtualFs.files.keys()) {
+                        for (node in virtualFs.ids) {
                             assetNode.id++;
                         }
                         var assetBase64 = haxe.crypto.Base64.encode(assetContent);
-                        virtualFs.files.set(assetNode.id, assetBase64);
+                        virtualFs.ids.push(assetNode.id);
+                        virtualFs.fileContents.push(assetBase64);
                         virtualFs.root.children.push(assetNode);
                         Sys.println("Asset file node created with ID: " + assetNode.id);
                     }
@@ -222,11 +225,11 @@ class Tsukuru {
                 var headerNode = new FileNode();
                 headerNode.name = "header.json";
                 headerNode.id = 1; // Generate a new ID
-                for (node in virtualFs.files.keys()) {
+                for (node in virtualFs.ids) {
                     headerNode.id++;
                 }
-                var headerBase64 = haxe.crypto.Base64.encode(headerBytes);
-                virtualFs.files.set(headerNode.id, headerBase64);
+                virtualFs.ids.push(headerNode.id);
+                virtualFs.fileContents.push(haxe.crypto.Base64.encode(headerBytes));
                 virtualFs.root.children.push(headerNode);
                 Sys.println("Header file node created with ID: " + headerNode.id);
 
@@ -234,7 +237,18 @@ class Tsukuru {
 
                 var sbfsJson : String = "";
 
-                sbfsJson = "#!/usr/bin/env sunaba\n" + Json.stringify(virtualFs);
+                
+
+                //for (id in virtualFs.files.keys()) {
+                //    var fileContent = virtualFs.files.get(id);
+                //    trace ("File ID: " + id + ", Content: " + fileContent);
+                //}
+                trace(virtualFs.ids);
+                trace(virtualFs.fileContents);
+
+                sbfsJson = "#!/usr/bin/env sunaba\n" + Json.stringify(virtualFs, null, "  ") + "\n";
+                File.saveContent(zipOutputPath, sbfsJson);
+                return;
             }
 
             // Create the zip file using haxe.zip.Writer
