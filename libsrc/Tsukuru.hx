@@ -1,5 +1,7 @@
 package;
 
+import haxe.Json;
+import VirutalFs.VirtualFs;
 import haxe.io.Bytes;
 import haxe.ds.StringMap;
 import sys.io.File;
@@ -120,14 +122,14 @@ class Tsukuru {
                 Sys.println("Building SBFS file...");
                 // Here you would implement the logic to build the SBFS file
                 // For now, we just print a message
-                var virtualFs = new VirtualFs();
+                var virtualFs : VirtualFs = new VirtualFs();
                 Sys.println("Virtual file system created.");
 
                 var mainLuaEntry = new FileNode();
                 mainLuaEntry.name = this.snbProjJson.luabin;
                 mainLuaEntry.id = 1; // Example ID, you can generate a unique ID
                 Sys.println("Main Lua file node created with ID: " + mainLuaEntry.id);
-                var mainLuaBase64 = haxe.io.Bytes.toBase64(mainLuaContent);
+                var mainLuaBase64 = haxe.crypto.Base64.encode(mainLuaContent);
                 virtualFs.files.set(mainLuaEntry.id, mainLuaBase64);
                 virtualFs.root.children.push(mainLuaEntry);
                 Sys.println("Main Lua file added to virtual file system.");
@@ -141,8 +143,11 @@ class Tsukuru {
                         var sourceMapContent = File.getBytes(sourceMapPath);
                         var sourceMapNode = new FileNode();
                         sourceMapNode.name = sourceMapName;
-                        sourceMapNode.id = virtualFs.files.keys().length + 1; // Generate a new ID
-                        var sourceMapBase64 = haxe.io.Bytes.toBase64(sourceMapContent);
+                        sourceMapNode.id = 1; // Generate a new ID
+                        for (node in virtualFs.files.keys()) {
+                            sourceMapNode.id++;
+                        }
+                        var sourceMapBase64 = haxe.crypto.Base64.encode(sourceMapContent);
                         virtualFs.files.set(sourceMapNode.id, sourceMapBase64);
                         virtualFs.root.children.push(sourceMapNode);
                         Sys.println("Source map file node created with ID: " + sourceMapNode.id);
@@ -159,8 +164,11 @@ class Tsukuru {
                         var typesXmlContent = File.getBytes(typesXmlPath);
                         var typesXmlNode = new FileNode();
                         typesXmlNode.name = "types.xml";
-                        typesXmlNode.id = virtualFs.files.keys().length + 1; // Generate a new ID
-                        var typesXmlBase64 = haxe.io.Bytes.toBase64(typesXmlContent);
+                        typesXmlNode.id = 1; // Generate a new ID
+                        for (node in virtualFs.files.keys()) {
+                            typesXmlNode.id++;
+                        }
+                        var typesXmlBase64 = haxe.crypto.Base64.encode(typesXmlContent);
                         virtualFs.files.set(typesXmlNode.id, typesXmlBase64);
                         virtualFs.root.children.push(typesXmlNode);
                         Sys.println("Types XML file node created with ID: " + typesXmlNode.id);
@@ -171,18 +179,25 @@ class Tsukuru {
                 }
 
                 // Add other files and directories to the virtual file system
-                var assetPath = this.projDirPath + "/" + this.snbProjJson.assetsDir;
+                var assetPath = this.projDirPath + "/" + this.snbProjJson.assetsdir;
                 if (FileSystem.exists(assetPath)) {
                     Sys.println("Assets directory exists: " + assetPath);
                     var assets = this.getAllFiles(assetPath);
-                    Sys.println("Found " + assets.keys().length + " asset files in the project.");
+                    var assetCount = 0;
+                    for (assetKey in assets.keys()) {
+                        assetCount++;
+                    }
+                    Sys.println("Found " + assetCount + " asset files in the project.");
                     for (assetKey in assets.keys()) {
                         var assetContent = assets.get(assetKey);
                         Sys.println("Adding asset file: " + assetKey);
                         var assetNode = new FileNode();
                         assetNode.name = StringTools.replace(assetKey, "assets/", "");
-                        assetNode.id = virtualFs.files.keys().length + 1; // Generate a new ID
-                        var assetBase64 = haxe.io.Bytes.toBase64(assetContent);
+                        assetNode.id = 1; // Generate a new ID
+                        for (node in virtualFs.files.keys()) {
+                            assetNode.id++;
+                        }
+                        var assetBase64 = haxe.crypto.Base64.encode(assetContent);
                         virtualFs.files.set(assetNode.id, assetBase64);
                         virtualFs.root.children.push(assetNode);
                         Sys.println("Asset file node created with ID: " + assetNode.id);
@@ -206,17 +221,20 @@ class Tsukuru {
                 var headerBytes = haxe.io.Bytes.ofString(headerJson);
                 var headerNode = new FileNode();
                 headerNode.name = "header.json";
-                headerNode.id = virtualFs.files.keys().length + 1; // Generate a new
-                var headerBase64 = haxe.io.Bytes.toBase64(headerBytes);
+                headerNode.id = 1; // Generate a new ID
+                for (node in virtualFs.files.keys()) {
+                    headerNode.id++;
+                }
+                var headerBase64 = haxe.crypto.Base64.encode(headerBytes);
                 virtualFs.files.set(headerNode.id, headerBase64);
                 virtualFs.root.children.push(headerNode);
                 Sys.println("Header file node created with ID: " + headerNode.id);
 
                 Sys.println("SBFS file created successfully.");
 
-                var sbfsJson = Json.stringify(virtualFs, null, 2);
+                var sbfsJson : String = "";
 
-                sbfsJson = "#SBFS\n" + sbfsJson;
+                sbfsJson = "#!/usr/bin/env sunaba\n" + Json.stringify(virtualFs);
             }
 
             // Create the zip file using haxe.zip.Writer
