@@ -14,6 +14,8 @@ class Tsukuru {
 
     public var zipOutputPath: String = "";
 
+    public var buildSbfs: Bool = false; // Whether to build SBFS files
+
     public var haxePath: String = "haxe"; // Default path to Haxe compiler
 
     public function new() {}
