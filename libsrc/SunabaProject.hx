@@ -11,6 +11,7 @@ typedef SunabaProject = {
     var sourcemap: Bool;
     var entrypoint: String;
     var luabin: String;
+    var pluginbin: String;
     var libraries: Array<String>;
     var compilerFlags: Array<String>;
 }
