@@ -16,6 +16,8 @@ class Tsukuru {
 
     public var haxePath: String = "haxe"; // Default path to Haxe compiler
 
+    public var markExecutable: Bool = true; // Whether to mark the output as executable
+
     public function new() {}
 
     public function build(snbprojPath: String): Void {
@@ -234,26 +236,32 @@ class Tsukuru {
             // Close the output stream
             out.close();
 
-            var shebang = "#!/usr/bin/env sunaba\n"; // or "#!/usr/bin/env sh\n"
-            var zipBytes = File.getBytes(zipOutputPath);
-            var shebangBytes = Bytes.ofString(shebang);
+            if (this.markExecutable) {
+                // Mark the output file as executable
+                Sys.println("Marking output file as executable: " + zipOutputPath);
+                var shebang = "#!/usr/bin/env sunaba\n"; // or "#!/usr/bin/env sh\n"
+                var zipBytes = File.getBytes(zipOutputPath);
+                var shebangBytes = Bytes.ofString(shebang);
         
-            // Combine shebang + zip
-            var outputBytes = Bytes.alloc(shebangBytes.length + zipBytes.length);
-            outputBytes.blit(0, shebangBytes, 0, shebangBytes.length);
-            outputBytes.blit(shebangBytes.length, zipBytes, 0, zipBytes.length);
+                // Combine shebang + zip
+                var outputBytes = Bytes.alloc(shebangBytes.length + zipBytes.length);
+                outputBytes.blit(0, shebangBytes, 0, shebangBytes.length);
+                outputBytes.blit(shebangBytes.length, zipBytes, 0, zipBytes.length);
 
-            // Write to new executable file
-            var out = File.write(zipOutputPath, true); // binary mode
-            out.write(outputBytes);
-            out.close();
+                // Write to new executable file
+                var out = File.write(zipOutputPath, true); // binary mode
+                out.write(outputBytes);
+                out.close();
 
-            if (snbProjJson.type == "executable") {
-                Sys.println("sbx file created successfully at: " + zipOutputPath);
+                if (snbProjJson.type == "executable") {
+                    Sys.println("sbx file created successfully at: " + zipOutputPath);
+                }
+                else if (snbProjJson.type == "library") {
+                    Sys.println("sblib file created successfully at: " + zipOutputPath);
+                }
             }
-            else if (snbProjJson.type == "library") {
-                Sys.println("sblib file created successfully at: " + zipOutputPath);
-            }
+
+            
             
         } catch (e: Dynamic) {
             Sys.println("Error loading project JSON: " + e);

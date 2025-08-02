@@ -38,6 +38,12 @@ class Main {
             snbprojpath = StringTools.replace(snbprojpath, "./", currentDirectory);
         }
 
+        for (arg in args) {
+            if (StringTools.startsWith(arg, "--markExecutable=")) {
+                tsukuru.markExecutable = StringTools.replace(arg, "--markExecutable=", "") == "true";
+            }
+        }
+
         tsukuru.build(snbprojpath);
     }
 }
