@@ -42,6 +42,9 @@ class Main {
             if (StringTools.startsWith(arg, "--markExecutable=")) {
                 tsukuru.markExecutable = StringTools.replace(arg, "--markExecutable=", "") == "true";
             }
+            if (arg == "-nmx") {
+                tsukuru.markExecutable = false;
+            }
         }
 
         tsukuru.build(snbprojpath);
