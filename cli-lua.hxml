@@ -1,0 +1,4 @@
+--class-path clisrc
+--main Main
+--library tsukuru
+--lua bin/main.lua
