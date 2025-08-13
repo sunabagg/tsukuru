@@ -1,6 +1,7 @@
 package;
-
+#if lua
 import lua.Coroutine;
+#end
 import haxe.io.Bytes;
 import haxe.ds.StringMap;
 import sys.io.File;
