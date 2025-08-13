@@ -376,6 +376,7 @@ class Tsukuru {
             compressed: false
         });
         FileSystem.deleteFile(mainLuaPath);
+        Sys.println("Added File: main.lua");
         Coroutine.yield();
 
         // --------------------------------
@@ -397,6 +398,7 @@ class Tsukuru {
                 });
                 FileSystem.deleteFile(sourceMapPath);
             }
+            Sys.println("Added File: " + sourceMapName);
         }
         Coroutine.yield();
 
@@ -418,6 +420,7 @@ class Tsukuru {
                 });
                 FileSystem.deleteFile(typesXmlPath);
             }
+            Sys.println("Added File: types.xml");
         }
         Coroutine.yield();
 
@@ -427,6 +430,7 @@ class Tsukuru {
         var assetPath = this.projDirPath + "/" + this.snbProjJson.assetsdir;
         if (FileSystem.exists(assetPath)) {
             var assets = this.getAllFiles(assetPath);
+            Coroutine.yield();
             for (assetKey in assets.keys()) {
                 var assetContent = assets.get(assetKey);
                 entries.add({
@@ -438,6 +442,8 @@ class Tsukuru {
                     crc32: haxe.crypto.Crc32.make(assetContent),
                     compressed: false
                 });
+                Sys.println("Added File: " + StringTools.replace(assetKey, "assets/", ""));
+                Coroutine.yield();
             }
         }
         Coroutine.yield();
@@ -463,6 +469,7 @@ class Tsukuru {
             crc32: haxe.crypto.Crc32.make(headerContent),
             compressed: false
         });
+        Sys.println("Added File: header.json");
         Coroutine.yield();
 
         // ---------------------------------
@@ -472,6 +479,7 @@ class Tsukuru {
         var writer = new haxe.zip.Writer(out);
         writer.write(entries);
         out.close();
+        Sys.println("Zip file created successfully at: " + zipOutputPath);
         Coroutine.yield();
 
         // ---------------------------------
@@ -488,6 +496,7 @@ class Tsukuru {
             var outExec = File.write(zipOutputPath, true);
             outExec.write(outputBytes);
             outExec.close();
+            Sys.println("Marked as executable: " + zipOutputPath);
         }
         Coroutine.yield();
 
