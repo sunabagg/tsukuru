@@ -10,7 +10,7 @@ import sys.FileSystem;
 class Tsukuru {
 
     public var snbprojPath: String;
-    public var projDirPath: String;
+    public var projDirPath: String = "";
 
     public var snbProjJson: SunabaProject;
 
@@ -280,12 +280,13 @@ class Tsukuru {
         // Phase 1: Initial setup and paths
         // ---------------------------------
         Sys.println("Building project at: " + snbprojPath);
-        snbprojPath = FileSystem.absolutePath(snbprojPath);
 
+        if (StringTools.contains(snbprojPath, "\\")) {
+            snbprojPath = StringTools.replace(snbprojPath, "\\", "/");
+        }
         this.snbprojPath = snbprojPath;
         var snbProjPathArray = snbprojPath.split("/");
         this.projDirPath = snbProjPathArray.slice(0, snbProjPathArray.length - 1).join("/");
-        this.projDirPath = FileSystem.absolutePath(this.projDirPath);
         Sys.println("Project directory path: " + this.projDirPath);
 
         var binPath = this.projDirPath + "/bin";
