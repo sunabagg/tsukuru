@@ -32,7 +32,6 @@ class Tsukuru {
         this.snbprojPath = snbprojPath;
         var snbProjPathArray = snbprojPath.split("/");
         this.projDirPath = snbProjPathArray.slice(0, snbProjPathArray.length - 1).join("/");
-        this.projDirPath = FileSystem.absolutePath(this.projDirPath);
         Sys.println("Project directory path: " + this.projDirPath);
         var binPath = this.projDirPath + "/bin";
         if (!FileSystem.exists(binPath)) {
